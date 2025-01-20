@@ -8,19 +8,22 @@ public class main {
     HashMap<Integer, ArrayList<String>> map = new HashMap<>();
 
     try {
+      // Initialize File scanner
       File dataSet = new File("Air_Quality.csv");
       Scanner fileScanner = new Scanner(dataSet);
-      fileScanner.nextLine();
+      fileScanner.nextLine(); // Skips over first line with column labels, should be changed later
 
-      while(fileScanner.hasNext()) {
+      while(fileScanner.hasNext()) { // For each line in the csv
         String line = fileScanner.nextLine();
-        String splitLine[] = line.split(",");
+        String splitLine[] = line.split(","); // Columns split into string array
 
+        // Then placed into list
         ArrayList<String> temp = new ArrayList<>();
         for(int i = 1; i < splitLine.length; i++) {
           temp.add(splitLine[i]);
         }
 
+        // And finally added to the hashmap
         map.put(Integer.parseInt(splitLine[0]), temp);
       }
 
@@ -29,8 +32,11 @@ public class main {
     catch (Exception e) {
       e.printStackTrace();
     }
+<<<<<<< HEAD
 
     System.out.println(map.size());
+=======
+>>>>>>> a1af7f0c2f5047a63bd05c312ee9758bec3b3dae
   }
 
   public static boolean addCSVLine(String filename, String newLine) {
