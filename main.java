@@ -1,4 +1,4 @@
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +35,7 @@ public class main {
       e.printStackTrace();
     }
 
+<<<<<<< HEAD
     s = new Scanner(System.in);
     Boolean running = true;
     while (running) {
@@ -98,4 +99,80 @@ public class main {
         }
 
     }
+=======
+    System.out.println(map.size());
+  }
+
+  public static boolean addCSVLine(String filename, String newLine) {
+    BufferedWriter writer = null;
+    try {
+      writer = new BufferedWriter(new FileWriter(filename, true));
+      writer.write(newLine);
+      writer.newLine();
+      writer.flush();
+      writer.close(); 
+      return true;
+    } catch (IOException e) {
+      System.err.println("Error writing to CSV file: " + e.getMessage());
+      return false;
+    }
+  }
+
+  public static boolean editCSVLine(String filename, int lineID, String newLine) {
+    try {
+      ArrayList<String> lines = new ArrayList<>();
+      BufferedReader reader = new BufferedReader(new FileReader(filename));
+      String line;
+      int currentLine = 0;
+      while ((line = reader.readLine()) != null) {
+        if (currentLine == lineID) {
+          lines.add(newLine);
+        } else {
+          lines.add(line);
+        }
+        currentLine++;
+      }
+      reader.close();
+
+      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+      for (String l : lines) {
+        writer.write(l);
+        writer.newLine();
+      }
+      writer.close();
+      return true;
+    } catch (IOException e) {
+      System.err.println("Error editing CSV file: " + e.getMessage());
+      return false;
+    }
+  }
+
+  public static boolean deleteCSVLine(String filename, int lineID) {
+    try {
+      ArrayList<String> lines = new ArrayList<>();
+      BufferedReader reader = new BufferedReader(new FileReader(filename));
+      String line;
+      int currentLine = 0;
+      while ((line = reader.readLine()) != null) {
+        if (currentLine != lineID) {
+          lines.add(line);
+        }
+        currentLine++;
+      }
+      reader.close();
+
+      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+      for (String l : lines) {
+        writer.write(l);
+        writer.newLine();
+      }
+      writer.close();
+      return true;
+    } catch (IOException e) {
+      System.err.println("Error deleting from CSV file: " + e.getMessage());
+      return false;
+    }
+  }
+
+>>>>>>> 4a8a5e0e6a5f1604d1cbf3a74dd26a3ce1b1d1cd
 }
