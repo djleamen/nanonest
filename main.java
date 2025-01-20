@@ -1,4 +1,4 @@
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -31,7 +31,21 @@ public class main {
     }
 
     System.out.println(map.size());
-
-
   }
+
+  public static boolean addCSVLine(String filename, String newLine) {
+    BufferedWriter writer = null;
+    try {
+      writer = new BufferedWriter(new FileWriter(filename, true));
+      writer.write(newLine);
+      writer.newLine();
+      writer.flush();
+      writer.close(); 
+      return true;
+    } catch (IOException e) {
+      System.err.println("Error writing to CSV file: " + e.getMessage());
+      return false;
+    }
+  }
+
 }
