@@ -35,7 +35,6 @@ public class main {
       e.printStackTrace();
     }
 
-<<<<<<< HEAD
     s = new Scanner(System.in);
     Boolean running = true;
     while (running) {
@@ -74,7 +73,7 @@ public class main {
   public static void displayEntries(Map<Integer, ArrayList<String>> map) {
         System.out.println();
         for (Map.Entry<Integer, ArrayList<String>> entry : map.entrySet()) {
-            Int key = entry.getKey();
+            Integer key = entry.getKey();
             ArrayList<String> value = entry.getValue();
             System.out.println(key + ": " + value);
         }
@@ -99,9 +98,7 @@ public class main {
         }
 
     }
-=======
-    System.out.println(map.size());
-  }
+    // System.out.println(map.size());
 
   public static boolean addCSVLine(String filename, String newLine) {
     BufferedWriter writer = null;
@@ -174,5 +171,4 @@ public class main {
     }
   }
 
->>>>>>> 4a8a5e0e6a5f1604d1cbf3a74dd26a3ce1b1d1cd
 }
