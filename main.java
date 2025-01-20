@@ -32,11 +32,8 @@ public class main {
     catch (Exception e) {
       e.printStackTrace();
     }
-<<<<<<< HEAD
 
     System.out.println(map.size());
-=======
->>>>>>> a1af7f0c2f5047a63bd05c312ee9758bec3b3dae
   }
 
   public static boolean addCSVLine(String filename, String newLine) {
@@ -50,6 +47,62 @@ public class main {
       return true;
     } catch (IOException e) {
       System.err.println("Error writing to CSV file: " + e.getMessage());
+      return false;
+    }
+  }
+
+  public static boolean editCSVLine(String filename, int lineID, String newLine) {
+    try {
+      ArrayList<String> lines = new ArrayList<>();
+      BufferedReader reader = new BufferedReader(new FileReader(filename));
+      String line;
+      int currentLine = 0;
+      while ((line = reader.readLine()) != null) {
+        if (currentLine == lineID) {
+          lines.add(newLine);
+        } else {
+          lines.add(line);
+        }
+        currentLine++;
+      }
+      reader.close();
+
+      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+      for (String l : lines) {
+        writer.write(l);
+        writer.newLine();
+      }
+      writer.close();
+      return true;
+    } catch (IOException e) {
+      System.err.println("Error editing CSV file: " + e.getMessage());
+      return false;
+    }
+  }
+
+  public static boolean deleteCSVLine(String filename, int lineID) {
+    try {
+      ArrayList<String> lines = new ArrayList<>();
+      BufferedReader reader = new BufferedReader(new FileReader(filename));
+      String line;
+      int currentLine = 0;
+      while ((line = reader.readLine()) != null) {
+        if (currentLine != lineID) {
+          lines.add(line);
+        }
+        currentLine++;
+      }
+      reader.close();
+
+      BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+      for (String l : lines) {
+        writer.write(l);
+        writer.newLine();
+      }
+      writer.close();
+      return true;
+    } catch (IOException e) {
+      System.err.println("Error deleting from CSV file: " + e.getMessage());
       return false;
     }
   }
