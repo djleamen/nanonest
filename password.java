@@ -27,6 +27,8 @@ public class password{
             if (!usernameInput.equals(login)){
                 isRight = false;
                 System.out.println("Invalid Username");
+                myReader.close();
+                userInput.close();
                 return isRight;
             }
             
@@ -39,9 +41,13 @@ public class password{
             if (!passwordInput.equals(login)){
                 isRight = false;
                 System.out.println("Invalid Password");
+                myReader.close();
+                userInput.close();
                 return isRight;
             }
             System.out.println(isRight);
+            myReader.close();
+            userInput.close();
             return isRight;
             
         } catch (FileNotFoundException e){
