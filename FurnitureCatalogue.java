@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class FurnitureCatalogue {
   public static Scanner s;
   public static String[] headers = { "Price", "Type", "Colour", "Materials", "Size", "Quantity",
-      "Company", "Weight", "Style"};
+      "Company", "Weight", "Style" };
 
   public static void main(String[] args) {
     HashMap<Integer, ArrayList<String>> map = new HashMap<>();
@@ -77,7 +77,7 @@ public class FurnitureCatalogue {
     for (Map.Entry<Integer, ArrayList<String>> entry : map.entrySet()) {
       Integer key = entry.getKey();
       ArrayList<String> value = entry.getValue();
-      System.out.println(key + ": " + value);
+      System.out.println(key + ": " + value.get(2) + " " + value.get(1));
     }
     System.out.println();
   }
