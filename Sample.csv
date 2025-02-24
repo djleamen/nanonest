@@ -1,101 +1,101 @@
-Price,Furniture Type,Colour,Materials,Size,Quantity,Company,Weight,Style
-180,Chair,Blue,Enriched Plutonium,Medium,95,The Sofa Company,88,Gothic
-199,Stool,Black,Enriched Plutonium,Small,78,Leon's,217,Gothic
-233,Chair,Red,Metal,Small,143,Canadian Furniture,19,Gothic
-460,Side Table,White,Plastic,Medium,4,The Sofa Company,113,Traditional
-204,Stool,Yellow,Plastic,Medium,81,Furnberry,5,Traditional
-333,Bed,Black,Enriched Plutonium,Medium,97,Leon's,198,Gothic
-150,Chair,Blue,Plastic,Medium,149,Leon's,125,Modern
-345,Sofa,Yellow,Enriched Plutonium,Small,66,Leon's,159,Gothic
-147,Stool,Pink,Wood,Small,66,Canadian Furniture,107,Traditional
-398,Side Table,Blue,Plastic,Small,79,Furnberry,111,Gothic
-288,Stool,Yellow,Silicon,Medium,111,Canadian Furniture,120,Modern
-314,Sofa,Yellow,Wood,Large,27,Canadian Furniture,84,Gothic
-66,Side Table,Pink,Plastic,Small,51,Canadian Furniture,250,Gothic
-136,Bed,Pink,Wood,Large,51,Leon's,204,Gothic
-162,Bed,Purple,Plastic,Medium,140,Leon's,236,Modern
-215,Sofa,Green,Plastic,Medium,43,Furnberry,245,Modern
-272,Bed,Pink,Enriched Plutonium,Small,126,Furnberry,45,Modern
-144,Bed,White,Wood,Large,86,Canadian Furniture,103,Gothic
-66,Chair,Purple,Silicon,Small,150,Leon's,180,Modern
-183,Chair,Black,Plastic,Large,105,Furnberry,238,Gothic
-196,Bed,Red,Wood,Medium,8,Canadian Furniture,176,Modern
-296,Sofa,Purple,Plastic,Small,142,The Sofa Company,56,Traditional
-426,Sofa,Yellow,Silicon,Large,137,The Sofa Company,246,Traditional
-462,Bed,Pink,Wood,Medium,54,Furnberry,7,Modern
-153,Sofa,Yellow,Silicon,Large,64,Canadian Furniture,18,Gothic
-316,Sofa,Black,Wood,Medium,121,The Sofa Company,41,Modern
-55,Bed,Green,Silicon,Small,19,Furnberry,184,Traditional
-445,Side Table,Purple,Plastic,Medium,89,Leon's,178,Gothic
-64,Chair,Black,Metal,Large,11,Leon's,237,Modern
-351,Chair,Pink,Metal,Medium,7,Canadian Furniture,26,Gothic
-116,Table,White,Wood,Small,105,Furnberry,198,Traditional
-296,Side Table,Red,Metal,Small,72,Leon's,145,Traditional
-217,Table,Yellow,Plastic,Small,77,Furnberry,200,Traditional
-270,Stool,White,Plastic,Large,124,Furnberry,68,Modern
-271,Table,Blue,Metal,Small,23,The Sofa Company,232,Traditional
-227,Stool,Black,Wood,Medium,122,Canadian Furniture,110,Modern
-251,Table,Green,Wood,Medium,66,The Sofa Company,195,Traditional
-436,Chair,Pink,Metal,Medium,146,The Sofa Company,48,Modern
-498,Bed,Red,Enriched Plutonium,Large,37,Furnberry,193,Traditional
-45,Table,Pink,Wood,Medium,42,Canadian Furniture,211,Traditional
-336,Side Table,Purple,Enriched Plutonium,Small,58,Furnberry,162,Modern
-58,Side Table,White,Enriched Plutonium,Small,131,Canadian Furniture,8,Modern
-119,Chair,White,Plastic,Small,141,Furnberry,152,Modern
-271,Stool,Yellow,Plastic,Medium,69,Leon's,134,Gothic
-299,Chair,Pink,Plastic,Large,120,The Sofa Company,225,Traditional
-96,Sofa,Red,Silicon,Large,124,The Sofa Company,109,Modern
-227,Stool,Green,Metal,Large,148,Furnberry,95,Traditional
-134,Bed,Purple,Wood,Large,13,The Sofa Company,83,Gothic
-23,Sofa,Yellow,Wood,Small,70,The Sofa Company,189,Gothic
-231,Bed,Purple,Plastic,Medium,64,Leon's,110,Gothic
-123,Sofa,Green,Metal,Large,47,Furnberry,244,Gothic
-56,Side Table,Red,Plastic,Small,25,The Sofa Company,147,Modern
-31,Chair,Purple,Silicon,Medium,25,The Sofa Company,122,Modern
-86,Sofa,White,Wood,Small,108,The Sofa Company,209,Traditional
-44,Sofa,Purple,Plastic,Small,111,Furnberry,209,Traditional
-62,Table,Red,Silicon,Large,68,Canadian Furniture,195,Modern
-243,Chair,Green,Plastic,Medium,63,Furnberry,52,Traditional
-346,Chair,Black,Enriched Plutonium,Small,5,Leon's,12,Gothic
-489,Bed,Red,Silicon,Small,34,Leon's,201,Modern
-448,Bed,Red,Silicon,Large,74,Furnberry,237,Traditional
-316,Sofa,Red,Wood,Large,42,Leon's,237,Traditional
-481,Stool,Red,Metal,Small,82,The Sofa Company,100,Modern
-191,Table,Yellow,Silicon,Small,110,Canadian Furniture,101,Modern
-284,Table,Blue,Wood,Large,111,Furnberry,54,Modern
-362,Stool,Pink,Wood,Small,34,The Sofa Company,50,Gothic
-161,Bed,Purple,Enriched Plutonium,Large,51,Furnberry,95,Gothic
-216,Sofa,Purple,Silicon,Medium,93,The Sofa Company,173,Modern
-85,Chair,Pink,Enriched Plutonium,Large,65,Furnberry,60,Modern
-361,Chair,Red,Enriched Plutonium,Large,68,Leon's,143,Gothic
-470,Table,White,Silicon,Small,144,The Sofa Company,237,Traditional
-394,Side Table,Black,Silicon,Medium,54,Furnberry,204,Modern
-41,Sofa,Purple,Silicon,Medium,140,The Sofa Company,12,Traditional
-339,Table,Yellow,Plastic,Medium,107,Canadian Furniture,47,Modern
-35,Chair,Yellow,Wood,Large,36,Furnberry,5,Gothic
-373,Table,Green,Metal,Medium,59,Leon's,155,Modern
-72,Table,White,Enriched Plutonium,Medium,132,Leon's,159,Modern
-362,Sofa,Red,Plastic,Medium,10,Leon's,54,Traditional
-375,Sofa,Blue,Enriched Plutonium,Medium,32,Furnberry,27,Gothic
-51,Stool,Yellow,Wood,Medium,8,Furnberry,38,Traditional
-366,Stool,White,Enriched Plutonium,Large,104,Furnberry,57,Gothic
-411,Side Table,Pink,Enriched Plutonium,Large,87,Canadian Furniture,32,Modern
-180,Side Table,Pink,Wood,Large,87,Leon's,29,Traditional
-25,Side Table,Black,Silicon,Large,16,Furnberry,43,Modern
-500,Table,White,Enriched Plutonium,Small,85,The Sofa Company,182,Traditional
-65,Stool,Pink,Metal,Medium,52,Canadian Furniture,51,Traditional
-254,Bed,Red,Metal,Small,26,Canadian Furniture,71,Modern
-487,Table,Purple,Silicon,Large,120,Leon's,229,Gothic
-213,Side Table,Yellow,Enriched Plutonium,Small,32,Furnberry,19,Modern
-336,Chair,Pink,Enriched Plutonium,Small,138,Canadian Furniture,99,Modern
-234,Sofa,White,Plastic,Large,89,Canadian Furniture,124,Gothic
-405,Table,Yellow,Wood,Medium,8,Leon's,64,Traditional
-42,Stool,Blue,Silicon,Small,150,Furnberry,31,Modern
-385,Stool,White,Enriched Plutonium,Large,79,Furnberry,216,Traditional
-266,Side Table,Blue,Plastic,Large,133,Leon's,167,Gothic
-178,Table,Purple,Wood,Small,50,Furnberry,203,Traditional
-299,Table,Yellow,Wood,Large,71,The Sofa Company,125,Modern
-474,Bed,White,Wood,Small,78,Furnberry,215,Modern
-71,Stool,Black,Plastic,Large,89,Canadian Furniture,74,Modern
-228,Chair,White,Wood,Small,31,Furnberry,219,Gothic
-57,Chair,Black,Silicon,Medium,12,Furnberry,112,Gothic
+id,Price,Furniture Type,Colour,Materials,Size,Quantity,Company,Weight,Style
+0,167,Side Table,Purple,Wood,Medium,113,Canadian Furniture,5,Traditional
+1,47,Sofa,Yellow,Wood,Medium,10,The Sofa Company,240,Modern
+2,289,Stool,Red,Metal,Small,91,Furnberry,221,Gothic
+3,272,Stool,Purple,Plastic,Large,143,The Sofa Company,116,Gothic
+4,336,Side Table,Blue,Metal,Large,136,Leon's,125,Gothic
+5,206,Table,Blue,Wood,Small,98,The Sofa Company,192,Traditional
+6,219,Table,Pink,Enriched Plutonium,Large,34,Leon's,137,Gothic
+7,91,Sofa,Blue,Enriched Plutonium,Small,39,Leon's,243,Modern
+8,471,Sofa,Green,Silicon,Small,135,Canadian Furniture,145,Gothic
+9,113,Sofa,Yellow,Enriched Plutonium,Medium,51,The Sofa Company,24,Traditional
+10,238,Side Table,Green,Metal,Large,49,The Sofa Company,48,Modern
+11,206,Stool,Yellow,Plastic,Small,135,Canadian Furniture,104,Modern
+12,487,Chair,Blue,Enriched Plutonium,Small,86,Furnberry,56,Gothic
+13,343,Side Table,Green,Silicon,Small,52,Canadian Furniture,216,Modern
+14,247,Chair,Green,Metal,Large,143,The Sofa Company,14,Modern
+15,281,Bed,Yellow,Wood,Small,145,Canadian Furniture,106,Traditional
+16,238,Chair,White,Silicon,Large,82,Furnberry,214,Modern
+17,415,Stool,Pink,Wood,Medium,56,Canadian Furniture,13,Gothic
+18,407,Side Table,Purple,Enriched Plutonium,Large,4,Leon's,168,Traditional
+19,413,Chair,Purple,Wood,Small,109,The Sofa Company,217,Modern
+20,469,Sofa,Black,Metal,Medium,17,Furnberry,173,Modern
+21,466,Chair,White,Enriched Plutonium,Large,88,Leon's,78,Gothic
+22,25,Table,Pink,Silicon,Large,31,The Sofa Company,43,Traditional
+23,274,Stool,Red,Metal,Large,17,The Sofa Company,186,Traditional
+24,62,Table,White,Metal,Medium,29,Furnberry,173,Modern
+25,68,Stool,Purple,Plastic,Large,68,The Sofa Company,247,Gothic
+26,377,Bed,Yellow,Wood,Medium,97,The Sofa Company,99,Gothic
+27,410,Table,Blue,Metal,Large,33,The Sofa Company,177,Traditional
+28,102,Bed,Red,Plastic,Small,38,Leon's,91,Gothic
+29,81,Stool,Pink,Silicon,Small,15,Canadian Furniture,105,Modern
+30,314,Sofa,Purple,Plastic,Large,126,Leon's,188,Modern
+31,359,Stool,Blue,Metal,Large,51,The Sofa Company,80,Traditional
+32,467,Stool,Blue,Wood,Medium,143,Canadian Furniture,90,Modern
+33,237,Sofa,Black,Wood,Small,77,The Sofa Company,216,Traditional
+34,98,Stool,Red,Wood,Small,59,The Sofa Company,79,Modern
+35,111,Stool,Black,Silicon,Small,72,The Sofa Company,201,Gothic
+36,434,Stool,Red,Plastic,Large,128,Furnberry,131,Traditional
+37,98,Table,Yellow,Enriched Plutonium,Small,87,Furnberry,202,Gothic
+38,440,Bed,Purple,Silicon,Small,6,Leon's,157,Traditional
+39,344,Chair,Yellow,Metal,Medium,118,Leon's,121,Modern
+40,78,Sofa,Pink,Metal,Medium,139,Leon's,214,Gothic
+41,197,Bed,White,Enriched Plutonium,Large,147,Leon's,84,Gothic
+42,442,Bed,Red,Enriched Plutonium,Medium,68,Furnberry,23,Traditional
+43,279,Chair,Green,Wood,Large,138,The Sofa Company,236,Modern
+44,215,Table,Blue,Silicon,Large,1,Leon's,110,Modern
+45,438,Bed,Green,Wood,Small,135,Leon's,92,Traditional
+46,86,Chair,Black,Plastic,Large,88,Furnberry,153,Modern
+47,355,Sofa,White,Enriched Plutonium,Medium,4,The Sofa Company,197,Traditional
+48,458,Chair,Red,Enriched Plutonium,Large,16,Leon's,68,Gothic
+49,314,Stool,Black,Plastic,Large,118,Canadian Furniture,56,Gothic
+50,317,Sofa,White,Plastic,Large,120,The Sofa Company,250,Modern
+51,239,Side Table,Yellow,Enriched Plutonium,Medium,22,Leon's,232,Gothic
+52,29,Sofa,Pink,Wood,Small,40,Furnberry,189,Gothic
+53,65,Sofa,Red,Enriched Plutonium,Medium,120,Canadian Furniture,75,Gothic
+54,289,Stool,Red,Wood,Small,143,Furnberry,101,Traditional
+55,25,Bed,White,Enriched Plutonium,Small,91,The Sofa Company,51,Modern
+56,294,Stool,Blue,Metal,Small,150,Leon's,104,Traditional
+57,130,Side Table,Purple,Metal,Small,79,Leon's,167,Gothic
+58,462,Table,Purple,Silicon,Medium,74,The Sofa Company,103,Gothic
+59,143,Chair,White,Silicon,Large,130,Furnberry,56,Modern
+60,336,Sofa,White,Silicon,Small,51,Leon's,151,Gothic
+61,437,Sofa,Red,Plastic,Small,19,Canadian Furniture,247,Gothic
+62,234,Chair,Red,Enriched Plutonium,Medium,23,Furnberry,81,Modern
+63,143,Bed,Purple,Metal,Medium,32,Leon's,95,Modern
+64,55,Sofa,Black,Plastic,Medium,90,The Sofa Company,177,Modern
+65,443,Bed,Purple,Silicon,Large,61,The Sofa Company,66,Modern
+66,499,Bed,Yellow,Plastic,Medium,20,Canadian Furniture,85,Modern
+67,101,Bed,Red,Metal,Large,108,The Sofa Company,220,Gothic
+68,167,Stool,Yellow,Plastic,Medium,140,The Sofa Company,87,Traditional
+69,249,Table,White,Plastic,Small,111,Furnberry,174,Gothic
+70,370,Stool,Purple,Plastic,Small,145,Canadian Furniture,162,Modern
+71,316,Bed,Yellow,Wood,Large,131,Furnberry,99,Modern
+72,190,Chair,Pink,Metal,Medium,114,The Sofa Company,39,Traditional
+73,90,Table,Pink,Enriched Plutonium,Small,144,Furnberry,124,Modern
+74,318,Stool,Green,Metal,Small,132,Furnberry,156,Modern
+75,400,Bed,Yellow,Metal,Small,8,Furnberry,245,Traditional
+76,470,Chair,Red,Wood,Large,27,Furnberry,161,Gothic
+77,108,Side Table,Red,Wood,Small,97,Leon's,101,Gothic
+78,322,Table,Purple,Wood,Medium,32,Furnberry,218,Gothic
+79,420,Sofa,Red,Wood,Small,38,Furnberry,95,Modern
+80,348,Sofa,Green,Metal,Large,106,Furnberry,140,Traditional
+81,238,Bed,Red,Silicon,Medium,65,Furnberry,106,Gothic
+82,95,Chair,Purple,Wood,Large,56,The Sofa Company,238,Traditional
+83,96,Stool,Red,Enriched Plutonium,Small,23,Canadian Furniture,122,Traditional
+84,169,Bed,Blue,Metal,Small,135,Furnberry,7,Modern
+85,200,Chair,Red,Metal,Large,127,Canadian Furniture,60,Modern
+86,248,Chair,Green,Enriched Plutonium,Large,136,Furnberry,116,Gothic
+87,203,Stool,Red,Metal,Small,135,Leon's,159,Modern
+88,181,Sofa,Pink,Silicon,Large,44,Leon's,128,Modern
+89,270,Chair,Green,Metal,Small,60,Canadian Furniture,74,Traditional
+90,415,Bed,Red,Wood,Large,2,Leon's,47,Gothic
+91,152,Sofa,White,Silicon,Large,3,Canadian Furniture,84,Traditional
+92,197,Stool,Black,Silicon,Small,141,The Sofa Company,47,Gothic
+93,441,Chair,Blue,Wood,Medium,22,Canadian Furniture,60,Modern
+94,393,Sofa,Red,Wood,Large,143,Canadian Furniture,13,Traditional
+95,63,Sofa,Blue,Wood,Medium,104,Furnberry,78,Gothic
+96,393,Bed,Yellow,Enriched Plutonium,Small,46,Canadian Furniture,43,Gothic
+97,479,Side Table,Black,Enriched Plutonium,Small,98,Furnberry,15,Traditional
+98,441,Sofa,White,Metal,Medium,31,Leon's,43,Traditional
+99,77,Chair,Yellow,Enriched Plutonium,Small,126,Leon's,5,Gothic
