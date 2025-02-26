@@ -15,12 +15,17 @@ public class CatalogueFileIO {
         this.loadFile();
     }
 
+    /**
+     * Loads the CSV file into a Hash Map
+     */
     public void loadFile() {
         try {
+            // load CSV file
             csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
             Scanner fileScanner = new Scanner(csvFile);
-            this.UI.headers = fileScanner.nextLine().split(",");
-            this.UI.catalogue = new HashMap<>();
+            this.UI.headers = fileScanner.nextLine().split(","); // Get headers from first line of CSV
+            this.UI.catalogue = new HashMap<>(); // Initialize blank hash map
+            // load each entry from CSV file into hash map
             while (fileScanner.hasNextLine()) {
                 String[] line = fileScanner.nextLine().split(",");
 
@@ -34,6 +39,11 @@ public class CatalogueFileIO {
         }
     }
 
+    /**
+     * Adds a new line to the bottom of the CSV file
+     *
+     * @param newLine String to add to file
+     */
     public void addCSVLine(String newLine) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
@@ -46,6 +56,12 @@ public class CatalogueFileIO {
         }
     }
 
+    /**
+     * Finds a line in the CSV and changes its text
+     *
+     * @param lineID  the ID of the line to change
+     * @param newLine the new text to use
+     */
     public void editCSVLine(String lineID, String newLine) {
         try {
             ArrayList<String> lines = new ArrayList<>();
@@ -72,6 +88,11 @@ public class CatalogueFileIO {
         }
     }
 
+    /**
+     * Deletes a specified line from the CSV
+     *
+     * @param lineID ID of the line to remove
+     */
     public void deleteCSVLine(String lineID) {
         try {
             ArrayList<String> lines = new ArrayList<>();
