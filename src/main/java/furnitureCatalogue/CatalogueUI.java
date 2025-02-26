@@ -6,7 +6,6 @@ public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
     public CatalogueFileIO fileIO;
     public String[] headers;
-    private String[] menuOptions = {"Display all Entries", "Edit an entry", "Add an entry", "View Specific Entry"};
     private Scanner s;
 
     public static void main(String[] args) {
@@ -22,7 +21,13 @@ public class CatalogueUI {
         s = new Scanner(System.in);
         boolean running = true;
         while (running) {
-            printMenu();
+            String[] menuOptions = {
+                    "Display all Entries",
+                    "Edit an entry",
+                    "Add an entry",
+                    "View Specific Entry"
+            };
+            printMenu(menuOptions);
             String inp = s.nextLine();
             switch (inp) {
                 case "1":
@@ -99,6 +104,7 @@ public class CatalogueUI {
 
     private void printMenu() {
         for (int i = 0; i < menuOptions.length; i++) {
+    private void printMenu(String[] menuOptions) {
             System.out.println((i + 1) + ". " + menuOptions[i]);
         }
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: ");
