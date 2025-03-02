@@ -29,6 +29,7 @@ public class CatalogueUI {
                     "Display all Entries",
                     "Edit an entry",
                     "Add an entry",
+                    "Remove an entry",
                     "View Specific Entry"
             };
             printMenu(menuOptions);
@@ -44,9 +45,12 @@ public class CatalogueUI {
                     addEntry();
                     break;
                 case "4":
-                    viewEntry();
+                    removeEntry();
                     break;
                 case "5":
+                    viewEntry();
+                    break;
+                case "6":
                     running = false;
                     break;
                 default:
@@ -120,6 +124,19 @@ public class CatalogueUI {
         }
         catalogue.put(Integer.parseInt(inp), value);
         fileIO.addCSVLine(inp + "," + String.join(",", value));
+    }
+
+    public void removeEntry() {
+        System.out.print("Choose ID for Entry: ");
+        String inp = s.nextLine();
+
+        if (catalogue.containsKey(Integer.parseInt(inp))) {
+            catalogue.remove(Integer.parseInt(inp));
+            fileIO.deleteCSVLine(inp); // Pass only the ID
+            System.out.println("Entry removed successfully.");
+        } else {
+            System.out.println("Entry not found.");
+        }
     }
 
     /**
