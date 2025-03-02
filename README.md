@@ -22,6 +22,25 @@ You will need the following to be able to run and compile this program:
 
 ## How to use:
 
+Each piece of furniture is represented using an id, and has various parameters, they are:
+- Price
+- Furniture Type
+- Colour
+- Materials
+- Size
+- Quantity
+- Company
+- Weight
+- Style
+
 Now that it is running, you will have 5 options to choose from on how to use the program. To select the option you want to use, type in the corresponding integer. They are:
-1. Display All Entries.
-2. 
+1. Display all entries (Simply prints every entry in the database in the console).
+2. Edit an entry (Given an entry ID, allows the user to change each of the Price, Furniture Type, Colour, Materials, Size, Quantity, Company, Weight, and Style of that entry.)
+3. Add an entry (Adds an entry to the database, and allows the user to set the Id, Price, Furniture Type, Colour, Materials, Size, Quantity, Company, Weight, and Style of that entry.)
+4. Remove an entry (Removes an entry from the database corresponding to its ID).
+5. View specific entry (Given an id, will remove that corresponding ID from the database).
+6. Exit (Terminates the program, saving any changes).
+
+Please note that terminating the program in other ways (i.e. shutting it down via task manager) will still keep the changes made to the database prior.
+
+
