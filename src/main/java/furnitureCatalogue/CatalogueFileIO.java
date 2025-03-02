@@ -21,7 +21,7 @@ public class CatalogueFileIO {
     public void loadFile() {
         try {
             // load CSV file
-            csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
+            csvFile = new File("./src/main/resources/" + fileName);
             Scanner fileScanner = new Scanner(csvFile);
             this.UI.headers = fileScanner.nextLine().split(","); // Get headers from first line of CSV
             this.UI.catalogue = new HashMap<>(); // Initialize blank hash map
@@ -34,7 +34,7 @@ public class CatalogueFileIO {
                 UI.catalogue.put(Integer.parseInt(line[0]), temp);
             }
             fileScanner.close();
-        } catch (FileNotFoundException | URISyntaxException e) {
+        } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -46,14 +46,12 @@ public class CatalogueFileIO {
      */
     public void addCSVLine(String newLine) {
         try {
-            csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
             BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile, true));
             writer.write(newLine);
             writer.newLine();
             writer.flush();
             writer.close();
-            System.out.println(newLine);
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             System.err.println("Error writing to CSV file: " + e.getMessage());
         }
     }
@@ -67,7 +65,6 @@ public class CatalogueFileIO {
     public void editCSVLine(String lineID, String newLine) {
         try {
             ArrayList<String> lines = new ArrayList<>();
-            csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
             BufferedReader reader = new BufferedReader(new FileReader(csvFile));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -86,7 +83,7 @@ public class CatalogueFileIO {
                 writer.newLine();
             }
             writer.close();
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             System.err.println("Error editing CSV file: " + e.getMessage());
         }
     }
@@ -98,7 +95,6 @@ public class CatalogueFileIO {
      */
     public void deleteCSVLine(String lineID) {
         try {
-            csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
             ArrayList<String> lines = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new FileReader(csvFile));
             String line;
@@ -116,7 +112,7 @@ public class CatalogueFileIO {
                 writer.newLine();
             }
             writer.close();
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             System.err.println("Error deleting from CSV file: " + e.getMessage());
         }
     }
