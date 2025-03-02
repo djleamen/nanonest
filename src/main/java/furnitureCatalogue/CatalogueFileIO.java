@@ -46,12 +46,14 @@ public class CatalogueFileIO {
      */
     public void addCSVLine(String newLine) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+            csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
+            BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile, true));
             writer.write(newLine);
             writer.newLine();
             writer.flush();
             writer.close();
-        } catch (IOException e) {
+            System.out.println(newLine);
+        } catch (IOException | URISyntaxException e) {
             System.err.println("Error writing to CSV file: " + e.getMessage());
         }
     }
@@ -65,6 +67,7 @@ public class CatalogueFileIO {
     public void editCSVLine(String lineID, String newLine) {
         try {
             ArrayList<String> lines = new ArrayList<>();
+            csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
             BufferedReader reader = new BufferedReader(new FileReader(csvFile));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -83,7 +86,7 @@ public class CatalogueFileIO {
                 writer.newLine();
             }
             writer.close();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             System.err.println("Error editing CSV file: " + e.getMessage());
         }
     }
@@ -95,6 +98,7 @@ public class CatalogueFileIO {
      */
     public void deleteCSVLine(String lineID) {
         try {
+            csvFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(this.fileName)).toURI());
             ArrayList<String> lines = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new FileReader(csvFile));
             String line;
@@ -112,7 +116,7 @@ public class CatalogueFileIO {
                 writer.newLine();
             }
             writer.close();
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             System.err.println("Error deleting from CSV file: " + e.getMessage());
         }
     }
