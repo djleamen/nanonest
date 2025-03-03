@@ -1,6 +1,9 @@
 package furnitureCatalogue;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
@@ -30,7 +33,8 @@ public class CatalogueUI {
                     "Edit an entry",
                     "Add an entry",
                     "Remove an entry",
-                    "View Specific Entry"
+                    "View Specific Entry",
+                    "Search"
             };
             printMenu(menuOptions);
             String inp = s.nextLine();
@@ -51,6 +55,9 @@ public class CatalogueUI {
                     viewEntry();
                     break;
                 case "6":
+                    specificSearch();
+                    break;
+                case "7":
                     running = false;
                     break;
                 default:
@@ -69,7 +76,7 @@ public class CatalogueUI {
             Integer key = entry.getKey();
             ArrayList<String> value = entry.getValue();
             // prints each entry by id, type and color
-            System.out.println(key + ": " + value.get(2) + " " + value.get(1));
+            System.out.println(key + ": " + value.getFirst());
         }
         System.out.println();
     }
@@ -85,7 +92,7 @@ public class CatalogueUI {
             System.out.println(inp); // prints id
             // lists all attributes of entry
             for (int i = 0; i < value.size(); i++) {
-                System.out.println("\t" + headers[i] + ": " + value.get(i));
+                System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
             }
         }
     }
@@ -100,7 +107,7 @@ public class CatalogueUI {
             ArrayList<String> value = catalogue.get(Integer.parseInt(inp));
             // loops through all headers, prompting the user for data to replace previous data
             for (int i = 0; i < value.size(); i++) {
-                System.out.print("Input new " + headers[i] + " to replace " + value.get(i) + ": ");
+                System.out.print("Input new " + headers[i + 1] + " to replace " + value.get(i) + ": ");
                 String input = s.nextLine();
                 if (input.equals("")) {
                     value.set(i, value.get(i));
@@ -121,8 +128,8 @@ public class CatalogueUI {
         String inp = s.nextLine();
         ArrayList<String> value = new ArrayList<>();
         // loops through all headers, prompting the user for data
-        for (String header : headers) {
-            System.out.print("Input " + header + ": ");
+        for (int i = 1; i < headers.length; i++) {
+            System.out.print("Input " + headers[i] + ": ");
             String input = s.nextLine();
             value.add(input);
         }
@@ -140,6 +147,24 @@ public class CatalogueUI {
             System.out.println("Entry removed successfully.");
         } else {
             System.out.println("Entry not found.");
+        }
+    }
+
+    /**
+     * Allows the user to search based on the name of the item
+     */
+    public void specificSearch() {
+        System.out.println("Enter Search: ");
+        String inp = s.nextLine();
+
+        for (ArrayList<String> value : catalogue.values()) {
+            if (value.getFirst().equals(inp)) {
+                System.out.println(inp); // prints id
+                // lists all attributes of entry
+                for (int i = 0; i < value.size(); i++) {
+                    System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
+                }
+            }
         }
     }
 
