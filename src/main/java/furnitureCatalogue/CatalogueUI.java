@@ -137,6 +137,9 @@ public class CatalogueUI {
         fileIO.addCSVLine(inp + "," + String.join(",", value));
     }
 
+    /**
+     * Prompts the user to select a specific entry, then removes it from the Map and CSV
+     */
     public void removeEntry() {
         System.out.print("Choose ID for Entry: ");
         String inp = s.nextLine();
@@ -178,5 +181,9 @@ public class CatalogueUI {
             System.out.println((i + 1) + ". " + menuOptions[i]);
         }
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: "); // add exit and input prompts to the end of the menu
+    }
+
+    public void testCatalogueUI() {
+        return;
     }
 }
