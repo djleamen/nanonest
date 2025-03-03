@@ -68,8 +68,8 @@ public class CatalogueFileIO {
             BufferedReader reader = new BufferedReader(new FileReader(csvFile));
             String line;
             while ((line = reader.readLine()) != null) {
-                String currentLine = line.substring(0, 6);
-                if (currentLine.equals(lineID)) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(lineID)) {
                     lines.add(newLine);
                 } else {
                     lines.add(line);

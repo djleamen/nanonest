@@ -102,7 +102,11 @@ public class CatalogueUI {
             for (int i = 0; i < value.size(); i++) {
                 System.out.print("Input new " + headers[i] + " to replace " + value.get(i) + ": ");
                 String input = s.nextLine();
-                value.set(i, input);
+                if (input.equals("")) {
+                    value.set(i, value.get(i));
+                } else {
+                    value.set(i, input);
+                }
             }
             catalogue.put(Integer.parseInt(inp), value);
             fileIO.editCSVLine(inp, inp + "," + String.join(",", value));
