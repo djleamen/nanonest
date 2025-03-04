@@ -117,8 +117,4 @@ public class CatalogueFileIO {
             System.err.println("Error deleting from CSV file: " + e.getMessage());
         }
     }
-
-    public void testCatalogueFileIO() {
-        return;
-    }
 }

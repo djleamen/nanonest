@@ -182,8 +182,4 @@ public class CatalogueUI {
         }
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: "); // add exit and input prompts to the end of the menu
     }
-
-    public void testCatalogueUI() {
-        return;
-    }
 }
