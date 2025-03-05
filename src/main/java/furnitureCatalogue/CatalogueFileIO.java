@@ -2,6 +2,7 @@ package furnitureCatalogue;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 
 public class CatalogueFileIO {
@@ -20,24 +21,29 @@ public class CatalogueFileIO {
      */
     public void loadFile() {
         try {
-            // load CSV file
-            csvFile = new File("./src/main/resources/" + fileName);
+            // Use class loader to get file from resources
+            URL resource = getClass().getClassLoader().getResource(fileName);
+            if (resource == null) {
+                throw new FileNotFoundException("File not found: " + fileName);
+            }
+            csvFile = new File(resource.toURI());  // Convert URL to File using URI
+
+            // Proceed as usual
             Scanner fileScanner = new Scanner(csvFile);
             this.UI.headers = fileScanner.nextLine().split(","); // Get headers from first line of CSV
             this.UI.catalogue = new HashMap<>(); // Initialize blank hash map
             // load each entry from CSV file into hash map
             while (fileScanner.hasNextLine()) {
                 String[] line = fileScanner.nextLine().split(",");
-
                 ArrayList<String> temp = new ArrayList<>(Arrays.asList(line).subList(1, line.length));
-
                 UI.catalogue.put(Integer.parseInt(line[0]), temp);
             }
             fileScanner.close();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     /**
      * Adds a new line to the bottom of the CSV file
