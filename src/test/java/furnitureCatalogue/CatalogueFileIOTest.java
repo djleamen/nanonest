@@ -20,7 +20,11 @@ class CatalogueFileIOTest {
 
     @Test
     void testLoadFile() {
-        fileIO.loadFile();
+        CatalogueFileIO fileIO = new CatalogueFileIO("catalogue.csv", new CatalogueUI());
+        fileIO.loadFile(); // Now loadFile() can be called on the initialized object
+
+        // Check the result, for example:
+        assertNotNull(fileIO.UI.catalogue);
     }
 
     @Test
