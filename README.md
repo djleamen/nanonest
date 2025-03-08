@@ -39,9 +39,10 @@ Now that it is running, you will have five options to choose from on how to use 
 2. Edit an entry (Given an entry ID, allows the user to change each of the Price, Furniture Type, Colour, Materials, Size, Quantity, Company, Weight, and Style of that entry.)
 3. Add an entry (Adds an entry to the database, and allows the user to set the ID, Price, Furniture Type, Colour, Materials, Size, Quantity, Company, Weight, and Style of that entry.)
 4. Remove an entry (Removes an entry from the database corresponding to its ID).
-5. View specific entry (Given an ID, will remove that corresponding ID from the database).
-6. Displays a random entry (Picks a random item by ID and displays the info)
-7. Exit (Terminates the program, saving any changes).
+5. View specific entry (Given an ID, view that item).
+6. Specific Search (Given a name, view that item)
+7. Displays a random entry (Picks a random item by ID and displays the info)
+8. Exit (Terminates the program, saving any changes).
 
 Please note that terminating the program in other ways (i.e. shutting it down via task manager) will still keep the changes made to the database prior.
 
