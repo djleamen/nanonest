@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Random;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
@@ -34,7 +35,8 @@ public class CatalogueUI {
                     "Add an entry",
                     "Remove an entry",
                     "View Specific Entry",
-                    "Search"
+                    "Search",
+                    "Display Random Entry"  // My additon - Parish
             };
             printMenu(menuOptions);
             String inp = s.nextLine();
@@ -58,6 +60,9 @@ public class CatalogueUI {
                     specificSearch();
                     break;
                 case "7":
+                    randomEntry();
+                    break;
+                case "8":
                     running = false;
                     break;
                 default:
@@ -182,4 +187,21 @@ public class CatalogueUI {
         }
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: "); // add exit and input prompts to the end of the menu
     }
+
+    public void randomEntry() {
+        if (catalogue.isEmpty()) {
+            System.out.println("No items in the catalogue to select from");
+            return;
+        }
+        Random rand = new Random(); // Selects a random item from the csv
+        Integer randomId = (Integer) catalogue.keySet().toArray()[rand.nextInt(catalogue.size())];
+        ArrayList<String> randomEntry = catalogue.get(randomId);
+
+        System.out.println("Here is a random item from the furniture catalogue: ID #" + randomId + ", The item is a " + randomEntry.get(0)); ; //Print statement
+        for (int i = 0; i < randomEntry.size(); i++) {
+            System.out.println("\t" + headers[i + 1] + ": " + randomEntry.get(i));
+        }
+    }
+
+
 }
