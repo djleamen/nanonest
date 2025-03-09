@@ -24,7 +24,7 @@ public class CatalogueUI {
      * Prints a simple command line interface
      * that allows for the user to choose what they want to do
      */
-    private void commandLineMenu() {
+    protected void commandLineMenu() {
         s = new Scanner(System.in);
         boolean running = true;
         while (running) {
