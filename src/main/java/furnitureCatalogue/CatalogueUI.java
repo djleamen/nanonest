@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Random;
+import furnitureCatalogue.SearchPackage.*;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
@@ -18,7 +19,9 @@ public class CatalogueUI {
 
     public CatalogueUI() {
         fileIO = new CatalogueFileIO("Sample.csv", this);
-        commandLineMenu();
+        SearchController c = SearchController.getInstance();
+        c.searchQuery();
+        //commandLineMenu();
     }
 
     /**

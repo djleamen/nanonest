@@ -16,8 +16,12 @@ public class SearchController {
 
     // Private constructor, called at first request of class.
     private SearchController () {
+        c = this;
+
+        model = SearchModel.getInstance();
+
         query = "";
-        sortCategory = "ID";
+        sortCategory = "id";
         sortMode = true;
         filters = new HashMap<>();
     }
@@ -30,5 +34,12 @@ public class SearchController {
         return c;
     }
 
+    public void searchQuery() {
+        filters.clear(); // Clear previous filters before repopulating
+        // filters.add(header, textfield.getText());
+        // repeat for every text field
+
+        model.query();
+    }
 
 }
