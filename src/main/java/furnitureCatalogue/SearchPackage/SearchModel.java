@@ -18,8 +18,8 @@ public class SearchModel {
         fileName = "Sample.csv";
     }
 
-    // Returns reference to controller (controller is created on first call).
-    public static SearchModel getInstance() {
+    // Returns reference to model (model is created on first call).
+    protected static SearchModel getInstance() {
         if(Objects.isNull(m)) {
             m = new SearchModel();
         }
@@ -27,15 +27,19 @@ public class SearchModel {
     }
 
     public void query() {
-        //String url = getClass().getClassLoader().getResource(fileName).toString();
         String url = "src/main/resources/" + fileName;
+        String order;
+        if(controller.sortMode) {
+            order = " ASC";
+        }
+        else {
+            order = " DESC";
+        }
         try(Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement("CREATE TABLE t AS SELECT * FROM CSVREAD('" + url + "')");
             load.execute();
 
-            PreparedStatement search = connection.prepareStatement("SELECT * FROM t ORDER BY Name");
-//            PreparedStatement search = connection.prepareStatement("SELECT * FROM t ORDER BY ?");
-//            search.setString(1, controller.sortCategory);
+            PreparedStatement search = connection.prepareStatement("SELECT * FROM t ORDER BY " + controller.sortCategory + order);
             ResultSet queryResult = search.executeQuery();
             while(queryResult.next()) {
                 System.out.println(queryResult.getInt("id") + " - " + queryResult.getString("Name"));

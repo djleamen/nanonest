@@ -19,6 +19,7 @@ public class SearchController {
         c = this;
 
         model = SearchModel.getInstance();
+        view = SearchView.getInstance();
 
         query = "";
         sortCategory = "id";
@@ -39,6 +40,12 @@ public class SearchController {
         // filters.add(header, textfield.getText());
         // repeat for every text field
 
+        // Placeholder for compatibility with command line ui.
+        query = view.getQuery();
+        sortCategory = view.getSortCategory();
+        sortMode = view.getSortMode();
+
+//        sortCategory = "Name";
         model.query();
     }
 

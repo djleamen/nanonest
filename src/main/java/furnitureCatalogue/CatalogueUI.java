@@ -12,6 +12,8 @@ public class CatalogueUI {
     public CatalogueFileIO fileIO;
     public String[] headers;
     private Scanner s;
+    private SearchController c;
+    private SearchView v;
 
     public static void main(String[] args) {
         CatalogueUI catalogueUI = new CatalogueUI();
@@ -19,9 +21,10 @@ public class CatalogueUI {
 
     public CatalogueUI() {
         fileIO = new CatalogueFileIO("Sample.csv", this);
-        SearchController c = SearchController.getInstance();
-        c.searchQuery();
-        //commandLineMenu();
+        c = SearchController.getInstance();
+        v = SearchView.getInstance();
+//        c.searchQuery();
+        commandLineMenu();
     }
 
     /**
@@ -38,7 +41,8 @@ public class CatalogueUI {
                     "Add an entry",
                     "Remove an entry",
                     "View Specific Entry",
-                    "Search",
+                    "Search by ID",
+                    "Advanced Search (Currently only sorts entire csv)",
                     "Display Random Entry"  // My additon - Parish
             };
             printMenu(menuOptions);
@@ -63,9 +67,12 @@ public class CatalogueUI {
                     specificSearch();
                     break;
                 case "7":
-                    randomEntry();
+                    advancedSearch();
                     break;
                 case "8":
+                    randomEntry();
+                    break;
+                case "9":
                     running = false;
                     break;
                 default:
@@ -189,6 +196,25 @@ public class CatalogueUI {
             System.out.println((i + 1) + ". " + menuOptions[i]);
         }
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: "); // add exit and input prompts to the end of the menu
+    }
+
+    // Currently only sorts entire csv. Will update description as progress continues.
+    public void advancedSearch() {
+        System.out.println("Sort by what category?");
+        v.sortCategory = s.nextLine();
+        System.out.println("Ascending or Descending? (A/D)");
+        String temp = s.nextLine();
+        if(temp.equals("A")) {
+            v.sortMode = true;
+        }
+        else if(temp.equals("D")) {
+            v.sortMode = false;
+        }
+        else {
+            System.out.println("Invalid Input.");
+            return;
+        }
+        c.searchQuery();
     }
 
     public void randomEntry() {
