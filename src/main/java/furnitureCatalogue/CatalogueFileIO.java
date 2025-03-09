@@ -123,4 +123,14 @@ public class CatalogueFileIO {
             System.err.println("Error deleting from CSV file: " + e.getMessage());
         }
     }
+
+    public ArrayList<String> getRandomEntry() {
+        if (UI.catalogue.isEmpty()) {
+            return null;  // Null if empty
+        }
+        Random rand = new Random(); //Calls randomness and pulls a random item from the catalogue
+        Integer randomId = (Integer) UI.catalogue.keySet().toArray()[rand.nextInt(UI.catalogue.size())];
+        return UI.catalogue.get(randomId);
+    }
+
 }
