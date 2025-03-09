@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.0.16">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="2333" dy="2329" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="1915" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -138,13 +138,13 @@
             <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OyZKprMA5SsI55dwhn69-1" value="+" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-0" vertex="1">
+        <mxCell id="OyZKprMA5SsI55dwhn69-1" value="-v: SearchView[1] = this" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-0" vertex="1">
           <mxGeometry y="26" width="232" height="30" as="geometry" />
         </mxCell>
         <mxCell id="OyZKprMA5SsI55dwhn69-5" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="OyZKprMA5SsI55dwhn69-0" vertex="1">
           <mxGeometry y="56" width="232" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="OyZKprMA5SsI55dwhn69-6" value="+" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-0" vertex="1">
+        <mxCell id="OyZKprMA5SsI55dwhn69-6" value="+getView(): SearchView" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-0" vertex="1">
           <mxGeometry y="64" width="232" height="30" as="geometry" />
         </mxCell>
         <mxCell id="OyZKprMA5SsI55dwhn69-14" value="SearchModel" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
@@ -152,28 +152,28 @@
             <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OyZKprMA5SsI55dwhn69-15" value="-fileName: String[1] = &quot;&quot;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-14" vertex="1">
-          <mxGeometry y="26" width="232" height="30" as="geometry" />
+        <mxCell id="OyZKprMA5SsI55dwhn69-15" value="&lt;div&gt;-m: SearchModel[1] = this&lt;/div&gt;&lt;div&gt;-controller: SearchController[1] = null&lt;/div&gt;-fileName: String[1] = &quot;&quot;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-14" vertex="1">
+          <mxGeometry y="26" width="232" height="64" as="geometry" />
         </mxCell>
         <mxCell id="OyZKprMA5SsI55dwhn69-16" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="OyZKprMA5SsI55dwhn69-14" vertex="1">
-          <mxGeometry y="56" width="232" height="8" as="geometry" />
+          <mxGeometry y="90" width="232" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="OyZKprMA5SsI55dwhn69-17" value="&lt;div&gt;+basicQuery():&lt;/div&gt;+advancedQuery(String: filters):" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-14" vertex="1">
-          <mxGeometry y="64" width="232" height="30" as="geometry" />
+        <mxCell id="OyZKprMA5SsI55dwhn69-17" value="&lt;div&gt;#getInstance(): SearchModel&lt;/div&gt;&lt;div&gt;+query():&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-14" vertex="1">
+          <mxGeometry y="98" width="232" height="30" as="geometry" />
         </mxCell>
         <mxCell id="OyZKprMA5SsI55dwhn69-18" value="SearchController" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="818" y="-290" width="232" height="320" as="geometry">
+          <mxGeometry x="818" y="-290" width="232" height="332" as="geometry">
             <mxRectangle x="600" y="-350" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OyZKprMA5SsI55dwhn69-19" value="-model: SearchModel[1] = null&lt;div&gt;-view: SearchView[1] = null&lt;/div&gt;&lt;div&gt;#query: String[1] = &quot;&quot;&lt;/div&gt;&lt;div&gt;#sortCategory: String[1] = &quot;ID&quot;&lt;/div&gt;&lt;div&gt;#sortMode: boolean[1] = true&lt;/div&gt;&lt;div&gt;#filters: HashMap&amp;lt;String, String&amp;gt;[1] = null&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-18" vertex="1">
-          <mxGeometry y="30" width="232" height="90" as="geometry" />
+        <mxCell id="OyZKprMA5SsI55dwhn69-19" value="&lt;div&gt;-c: SearchController[1] = this&lt;/div&gt;-model: SearchModel[1] = null&lt;div&gt;-view: SearchView[1] = null&lt;/div&gt;&lt;div&gt;#query: String[1] = &quot;&quot;&lt;/div&gt;&lt;div&gt;#sortCategory: String[1] = &quot;ID&quot;&lt;/div&gt;&lt;div&gt;#sortMode: boolean[1] = true&lt;/div&gt;&lt;div&gt;#filters: HashMap&amp;lt;String, String&amp;gt;[1] = null&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-18" vertex="1">
+          <mxGeometry y="30" width="232" height="130" as="geometry" />
         </mxCell>
         <mxCell id="OyZKprMA5SsI55dwhn69-20" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="OyZKprMA5SsI55dwhn69-18" vertex="1">
-          <mxGeometry y="120" width="232" height="8" as="geometry" />
+          <mxGeometry y="160" width="232" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="OyZKprMA5SsI55dwhn69-21" value="+searchQuery(): void&lt;div&gt;+ getSearchView(): SearchView&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-18" vertex="1">
-          <mxGeometry y="128" width="232" height="146" as="geometry" />
+        <mxCell id="OyZKprMA5SsI55dwhn69-21" value="&lt;div&gt;+getInstance(): SearchController&lt;/div&gt;+searchQuery(): void" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="OyZKprMA5SsI55dwhn69-18" vertex="1">
+          <mxGeometry y="168" width="232" height="144" as="geometry" />
         </mxCell>
         <mxCell id="I-7PGxU8D5L3A5D0XDUW-0" value="Note: While the search code is layed out as such in anticipation for the gui, as this is not planned&lt;div&gt;until iteration 3 most connection between the controller and view is not written out yet.&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="690" y="-340" width="520" height="30" as="geometry" />
