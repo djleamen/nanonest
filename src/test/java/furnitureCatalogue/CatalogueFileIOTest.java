@@ -8,7 +8,7 @@ import java.nio.file.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CatalogueFileIOTest {
+public class CatalogueFileIOTest {
     private CatalogueFileIO fileIO;
     private CatalogueUI ui;
     private File tempCsvFile;

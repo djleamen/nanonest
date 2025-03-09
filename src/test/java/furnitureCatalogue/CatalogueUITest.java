@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CatalogueUITest {
+public class CatalogueUITest {
     private CatalogueUI ui;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
