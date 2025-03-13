@@ -11,14 +11,21 @@ public class CatalogueUI {
     public CatalogueFileIO fileIO;
     public String[] headers;
     private Scanner s;
-
+    private String role;
     public static void main(String[] args) {
         CatalogueUI catalogueUI = new CatalogueUI();
     }
 
     public CatalogueUI() {
+        Login login = new Login();
+        role = login.authenticate();
+        if (role == null) {
+            System.out.println("Exiting...");
+            return;
+        }
         fileIO = new CatalogueFileIO("Sample.csv", this);
         commandLineMenu();
+
     }
 
     /**
@@ -28,15 +35,19 @@ public class CatalogueUI {
     protected void commandLineMenu() {
         s = new Scanner(System.in);
         boolean running = true;
+        // prints the menu options based on the role of the user
         while (running) {
-            String[] menuOptions = {
+            String[] menuOptions = role.equals("admin") ? new String[]{
                     "Display all Entries",
                     "Edit an entry",
                     "Add an entry",
                     "Remove an entry",
                     "View Specific Entry",
-                    "Search",
-                    "Display Random Entry"  // My additon - Parish
+                    "Search"
+            } : new String[]{
+                    "Display all Entries",
+                    "View Specific Entry",
+                    "Search"
             };
             printMenu(menuOptions);
             String inp = s.nextLine();
@@ -45,25 +56,25 @@ public class CatalogueUI {
                     displayEntries();
                     break;
                 case "2":
-                    editEntry();
+                    if (role.equals("admin")) editEntry();
+                    else viewEntry();
                     break;
                 case "3":
-                    addEntry();
+                    if (role.equals("admin")) addEntry();
+                    else specificSearch();
                     break;
                 case "4":
-                    removeEntry();
+                    if (role.equals("admin")) removeEntry();
+                    else running = false;
                     break;
                 case "5":
-                    viewEntry();
+                    if (role.equals("admin")) viewEntry();
                     break;
                 case "6":
-                    specificSearch();
+                    if (role.equals("admin")) specificSearch();
                     break;
                 case "7":
-                    randomEntry();
-                    break;
-                case "8":
-                    running = false;
+                    if (role.equals("admin")) running = false;
                     break;
                 default:
                     break;
