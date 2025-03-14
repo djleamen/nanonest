@@ -12,7 +12,7 @@ public class SearchController {
     protected String query; // Actual search string
     protected String sortCategory;
     protected boolean sortMode; // true = ascending order, false = descending order.
-    protected HashMap<String, String> filters;
+    protected HashMap<String, String> filters; // key = csv category, value = quality that should be included (ex. <Colour, Blue>).
 
     // Private constructor, called at first request of class.
     private SearchController () {
@@ -23,7 +23,7 @@ public class SearchController {
 
         query = "";
         sortCategory = "id";
-        sortMode = true;
+        sortMode = true; // Ascending order by default.
         filters = new HashMap<>();
     }
 

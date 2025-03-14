@@ -39,6 +39,9 @@ public class SearchModel {
             PreparedStatement load = connection.prepareStatement("CREATE TABLE t AS SELECT * FROM CSVREAD('" + url + "')");
             load.execute();
 
+//            PreparedStatement reformat = connection.prepareStatement("ALTER TABLE t MODIFY COLUMN id INTEGER");
+//            reformat.execute();
+
             PreparedStatement search = connection.prepareStatement("SELECT * FROM t ORDER BY " + controller.sortCategory + order);
             ResultSet queryResult = search.executeQuery();
             while(queryResult.next()) {

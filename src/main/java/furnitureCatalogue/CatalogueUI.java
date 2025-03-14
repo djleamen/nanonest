@@ -12,8 +12,8 @@ public class CatalogueUI {
     public CatalogueFileIO fileIO;
     public String[] headers;
     private Scanner s;
-    private SearchController c;
-    private SearchView v;
+    private SearchController c; // Pointer to SearchController object.
+    private SearchView v; // Pointer to SearchView object.
 
     public static void main(String[] args) {
         CatalogueUI catalogueUI = new CatalogueUI();
@@ -200,6 +200,7 @@ public class CatalogueUI {
 
     // Currently only sorts entire csv. Will update description as progress continues.
     public void advancedSearch() {
+        // Feel free to change this however you like when adding prompts for filters
         System.out.println("Sort by what category?");
         v.sortCategory = s.nextLine();
         System.out.println("Ascending or Descending? (A/D)");

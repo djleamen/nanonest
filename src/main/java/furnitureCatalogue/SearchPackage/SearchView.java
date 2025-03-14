@@ -1,5 +1,6 @@
 package furnitureCatalogue.SearchPackage;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 // Placeholder to be properly implemented in iteration 3.
@@ -10,6 +11,7 @@ public class SearchView {
     public String query; // Actual search string
     public String sortCategory;
     public boolean sortMode; // true = ascending order, false = descending order.
+    public HashMap<String, String> filters = new HashMap<>();
 
     // Private constructor, called at first request of class.
     private SearchView() {
