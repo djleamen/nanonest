@@ -15,6 +15,7 @@ public class CatalogueUI {
     public static void main(String[] args) {
         CatalogueUI catalogueUI = new CatalogueUI();
     }
+    private Login login;
 
     public CatalogueUI() {
         Login login = new Login();
@@ -43,7 +44,8 @@ public class CatalogueUI {
                     "Add an entry",
                     "Remove an entry",
                     "View Specific Entry",
-                    "Search"
+                    "Search",
+                    "Add a user"
             } : new String[]{
                     "Display all Entries",
                     "View Specific Entry",
@@ -74,6 +76,9 @@ public class CatalogueUI {
                     if (role.equals("admin")) specificSearch();
                     break;
                 case "7":
+                    if (role.equals("admin")) Login.makeUser();
+                    break;
+                case "8":
                     if (role.equals("admin")) running = false;
                     break;
                 default:

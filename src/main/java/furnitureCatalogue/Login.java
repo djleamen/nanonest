@@ -1,8 +1,15 @@
 package furnitureCatalogue;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.io.*;
+import java.math.BigInteger;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
-import java.io.Console;
+import java.security.*;
 
 /*
  * This class is responsible for authenticating users based on a hardcoded list of users and roles to interact with the catalogue.
@@ -10,20 +17,22 @@ import java.io.Console;
  * to the CatalogueUI class to determine what actions the user can take.
  */
 public class Login {
-    private HashMap<String, String> users;
-    private HashMap<String, String> roles;
-    private Scanner scanner;
+    private static HashMap<String, String> users;
+    private final HashMap<String, String> roles;
+    private static Scanner scanner;
 
     public Login() {
-        users = new HashMap<>();
-        roles = new HashMap<>();
+        users = new HashMap<String, String>();
+        roles = new HashMap<String, String>();
         scanner = new Scanner(System.in);
-        
-        // TODO: Replace hardcoded users and roles with a database or external service
-        users.put("admin", "admin123");
-        roles.put("admin", "admin");
-        users.put("user", "user123");
-        roles.put("user", "user");
+
+        //Default Passwords:
+        /*
+        * User: user123
+        * Admin: admin123
+        * */
+
+        readCSV("src/main/resources/Users.csv");
     }
 
     // Authenticates the user based on the provided username and password
@@ -31,7 +40,8 @@ public class Login {
     public String authenticate() {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
-        String password = readPassword("Enter password: ");
+        //Hashes password to compare stored values and original password.
+        String password = hashString(readPassword("Enter password: "));
 
         if (users.containsKey(username) && users.get(username).equals(password)) {
             return roles.get(username);
@@ -52,4 +62,86 @@ public class Login {
             return new String(passwordArray);
         }
     }
+
+    //This function encrypts the string, so that passwords remain protected.
+    //The raw password is never used, instead the encrypted ones are compared.
+    private static String hashString(String input){
+        try{
+            String password = input;
+            byte[] salt = new byte[16];
+
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHMacSha1");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            return String.format("%x", new BigInteger(hash));
+
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void readCSV(String fileName){
+        try{
+            File userCSV = new File(fileName);
+            Scanner userReader = new Scanner(userCSV);
+
+            while(userReader.hasNextLine()) {
+                String[] splitLine = userReader.nextLine().split(",");
+                users.put(splitLine[0], splitLine[1]);
+                //Checks admin/user flag to determine if the rank is an admin or user.
+                if (Objects.equals(splitLine[2], "0")){
+                    roles.put(splitLine[0], "user");
+                } else{
+                    roles.put(splitLine[0], "admin");
+                }
+
+            }
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void makeUser(){
+        writeCSV("src/main/resources/Users.csv");
+    }
+
+    private static void writeCSV(String fileName){
+        //Check for duplicate users:
+        boolean userLoop = true;
+        String username = "";
+        while (userLoop){
+            System.out.println("Enter the Username: ");
+            username = scanner.nextLine();
+            if(users.containsKey(username)){
+                System.out.println("Error: Invalid input");
+            } else{
+                userLoop = false;
+            }
+        }
+        System.out.println("Enter the Password: ");
+        String password = hashString(scanner.nextLine());
+        boolean adminLoop = true;
+        String admin = "";
+        while (adminLoop){
+            System.out.println("Is this an admin? 1: Yes, 0: No");
+            admin = scanner.nextLine();
+            if(!Objects.equals(admin, "1") && !Objects.equals(admin, "0")){
+                System.out.println("Error: Invalid input");
+            } else{
+                adminLoop = false;
+            }
+        }
+        try {
+            File userCSV = new File(fileName);
+            FileWriter userWriter = new FileWriter(userCSV, true);
+            userWriter.write("\n");
+            userWriter.write(username + "," + password + "," + admin);
+            userWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
