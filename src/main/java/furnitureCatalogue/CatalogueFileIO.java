@@ -133,4 +133,8 @@ public class CatalogueFileIO {
         return UI.catalogue.get(randomId);
     }
 
+    public List<String> relevancySearch(String search) {
+        List<String> results = new ArrayList<>();
+        return results;
+    }
 }
