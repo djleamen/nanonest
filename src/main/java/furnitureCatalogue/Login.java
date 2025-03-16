@@ -4,12 +4,12 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.*;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
-import java.security.*;
 
 /*
  * This class is responsible for authenticating users based on a hardcoded list of users and roles to interact with the catalogue.
@@ -17,13 +17,13 @@ import java.security.*;
  * to the CatalogueUI class to determine what actions the user can take.
  */
 public class Login {
-    private static HashMap<String, String> users;
-    private final HashMap<String, String> roles;
-    private static Scanner scanner;
+    protected HashMap<String, String> users;
+    protected final HashMap<String, String> roles;
+    protected Scanner scanner;
 
     public Login() {
-        users = new HashMap<String, String>();
-        roles = new HashMap<String, String>();
+        users = new HashMap<>();
+        roles = new HashMap<>();
         scanner = new Scanner(System.in);
 
         //Default Passwords:
@@ -52,7 +52,7 @@ public class Login {
     }
 
     // Reads the password from the console securely (doesn't display the password)
-    private String readPassword(String prompt) {
+    protected String readPassword(String prompt) {
         Console console = System.console();
         if (console == null) {
             System.out.print(prompt);
@@ -65,8 +65,8 @@ public class Login {
 
     //This function encrypts the string, so that passwords remain protected.
     //The raw password is never used, instead the encrypted ones are compared.
-    private static String hashString(String input){
-        try{
+    private String hashString(String input) {
+        try {
             String password = input;
             byte[] salt = new byte[16];
 
@@ -75,9 +75,8 @@ public class Login {
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return String.format("%x", new BigInteger(hash));
 
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e){
-            e.printStackTrace();
-            return null;
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -97,16 +96,16 @@ public class Login {
                 }
 
             }
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void makeUser(){
+    public void makeUser() {
         writeCSV("src/main/resources/Users.csv");
     }
 
-    private static void writeCSV(String fileName){
+    private void writeCSV(String fileName) {
         //Check for duplicate users:
         boolean userLoop = true;
         String username = "";
@@ -139,9 +138,7 @@ public class Login {
             userWriter.write(username + "," + password + "," + admin);
             userWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
-
 }

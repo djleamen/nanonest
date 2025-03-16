@@ -26,8 +26,14 @@ public class CatalogueFileIOTest {
         // Create a test UI that bypasses the interactive menu
         ui = new CatalogueUI() {
             @Override
-            protected void commandLineMenu() {
-                // Override to avoid entering the interactive loop during tests
+            public void commandLineMenu() {
+                // No Testing.
+            }
+
+            @Override
+            public boolean inputLogin() {
+                role = "admin";
+                return false;
             }
         };
 

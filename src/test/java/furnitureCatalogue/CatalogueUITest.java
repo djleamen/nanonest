@@ -22,6 +22,12 @@ public class CatalogueUITest {
             public void commandLineMenu() {
                 // No Testing.
             }
+
+            @Override
+            public boolean inputLogin() {
+                role = "admin";
+                return false;
+            }
         };
 
         // Set up a sample entry for testing
@@ -112,7 +118,7 @@ public class CatalogueUITest {
     @Test
     void testAddEntry() throws Exception {
         // Simulate adding an entry with ID "192" and data for each field.
-        String simulatedInput = "192\nTable\nMetal\n\n\n\n\n\n\n\n\n";
+        String simulatedInput = "192\nTable\n250\n\n\n\n\n\n\n\n\n";
         Scanner testScanner = new Scanner(simulatedInput);
         Field scannerField = CatalogueUI.class.getDeclaredField("s");
         scannerField.setAccessible(true);
@@ -123,7 +129,7 @@ public class CatalogueUITest {
         ArrayList<String> newEntry = ui.catalogue.get(192);
         assertNotNull(newEntry, "New entry should be added.");
         assertEquals("Table", newEntry.get(0), "Type should be Table.");
-        assertEquals("Metal", newEntry.get(1), "Material should be Metal.");
+        assertEquals("250", newEntry.get(1), "Price should be 250.");
         // remove it from the file
         ui.fileIO.deleteCSVLine("192");
     }

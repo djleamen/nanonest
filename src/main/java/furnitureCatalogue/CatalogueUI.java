@@ -13,25 +13,31 @@ public class CatalogueUI {
     private Scanner s;
     private SearchController c; // Pointer to SearchController object.
     private SearchView v; // Pointer to SearchView object.
+    private Login login;
 
-    private String role;
+    protected String role;
+
     public static void main(String[] args) {
         CatalogueUI catalogueUI = new CatalogueUI();
     }
-    private Login login;
 
     public CatalogueUI() {
-        Login login = new Login();
-        role = login.authenticate();
-        if (role == null) {
-            System.out.println("Exiting...");
-            return;
-        }
+        if (inputLogin()) return;
         fileIO = new CatalogueFileIO("Sample.csv", this);
         c = SearchController.getInstance();
         v = SearchView.getInstance();
 //        c.searchQuery();
         commandLineMenu();
+    }
+
+    protected boolean inputLogin() {
+        login = new Login();
+        role = login.authenticate();
+        if (role == null) {
+            System.out.println("Exiting...");
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -97,7 +103,7 @@ public class CatalogueUI {
                     if (role.equals("admin")) randomEntry();
                     break;
                 case "11":
-                    if (role.equals("admin")) Login.makeUser();
+                    if (role.equals("admin")) login.makeUser();
                     break;
                 case "12":
                     if (role.equals("admin")) running = false;
