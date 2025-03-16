@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
+    public int[] maxLengths = new int[10];
     public CatalogueFileIO fileIO;
     public String[] headers;
     private Scanner s;
@@ -73,16 +74,48 @@ public class CatalogueUI {
     }
 
     /**
-     * Prints out the entire catalogue to the command line without showing all the details of every item
+     * Prints one line to the console with all the headers, each with enough space to accommodate the longest entry.
+     */
+    private void printTableHeader() {
+        StringBuilder headerString = new StringBuilder("id\t");
+        for (int i = 1; i < headers.length; i++) {
+            headerString.append(headers[i]);
+            // calculate how much space each column needs, and insert that amount of space
+            for (int j = 0; j <= Math.ceil((double) (maxLengths[i - 1]) / 4.0) - Math.floor((double) (headers[i].length()) / 4.0); j++) {
+                headerString.append("\t");
+            }
+        }
+        System.out.println(headerString);
+    }
+
+    /**
+     * Prints one row of the output table to the console
+     *
+     * @param entry the entry to print a row for
+     */
+    private void printTableRow(Map.Entry<Integer, ArrayList<String>> entry) {
+        Integer key = entry.getKey();
+        ArrayList<String> value = entry.getValue();
+        // prints each entry into a table
+        StringBuilder itemString = new StringBuilder(key + "\t");
+        for (int i = 0; i < value.size(); i++) {
+            itemString.append(value.get(i));
+            // calculate how much space each column needs, and insert that amount of space
+            for (int j = 0; j <= Math.ceil((double) (maxLengths[i]) / 4.0) - Math.floor((double) (value.get(i).length()) / 4.0); j++) {
+                itemString.append("\t");
+            }
+        }
+        System.out.println(itemString);
+    }
+
+        }
+    /**
+     * Prints out the entire catalogue to the command line as a table, showing all the details of every item
      */
     public void displayEntries() {
         System.out.println();
-        for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet()) {
-            Integer key = entry.getKey();
-            ArrayList<String> value = entry.getValue();
-            // prints each entry by id, type and color
-            System.out.println(key + ": " + value.getFirst());
-        }
+        printTableHeader();
+        catalogue.entrySet().forEach(this::printTableRow);
         System.out.println();
     }
 
@@ -114,7 +147,7 @@ public class CatalogueUI {
             for (int i = 0; i < value.size(); i++) {
                 System.out.print("Input new " + headers[i + 1] + " to replace " + value.get(i) + ": ");
                 String input = s.nextLine();
-                if (input.equals("")) {
+                if (input.isEmpty()) {
                     value.set(i, value.get(i));
                 } else {
                     value.set(i, input);
