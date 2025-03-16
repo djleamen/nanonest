@@ -10,7 +10,6 @@ public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
     public int[] maxLengths = new int[10];
     public CatalogueFileIO fileIO;
-    public int[] maxLengths = new int[10];
     public String[] headers;
     private Scanner s;
     private SearchController c; // Pointer to SearchController object.
