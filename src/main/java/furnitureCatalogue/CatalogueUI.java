@@ -89,7 +89,7 @@ public class CatalogueUI {
         System.out.print("Which field would you like to sort by?: ");
         String field = s.nextLine();
         int index = java.util.Arrays.asList(headers).indexOf(field);
-        if (index != -1) {
+        if (index != -1) { // if header was valid (included in the headers array)
             System.out.print("Ascending or Descending? (A/D): ");
             String inp = s.nextLine();
             if (Objects.equals(inp, "A") || Objects.equals(inp, "D")) {
@@ -102,6 +102,8 @@ public class CatalogueUI {
                     printTableRow(entry);
                 }
                 System.out.println("Sorted by: " + field + " (" + ((ascending) ? ("Ascending") : ("Descending")) + ")");
+            } else {
+                System.out.println(inp + " is not a valid input.");
             }
         } else {
             System.out.println(field + " is not a valid field.");
@@ -150,23 +152,26 @@ public class CatalogueUI {
      * @return the sorted list of map entries
      */
     private List<Map.Entry<Integer, ArrayList<String>>> getEntries(int index) {
-        List<Map.Entry<Integer, ArrayList<String>>> myList = new ArrayList<>(catalogue.entrySet());
+        List<Map.Entry<Integer, ArrayList<String>>> myList = new ArrayList<>(catalogue.entrySet()); // convert hash map to list
         Comparator<Map.Entry<Integer, ArrayList<String>>> myComparator;
+        // Different fields have different sorting methods, (i.e. the number fields need to be sorted as numbers instead of strings)
         if (index == 2 || index == 7 || index == 10) {
             myComparator = (o1, o2) -> {
+                // numbers should be converted to integers before comparing
                 int n = Integer.parseInt(o1.getValue().get(index - 1));
                 int m = Integer.parseInt(o2.getValue().get(index - 1));
                 return (int) Math.signum(n - m);
             };
-            myList.sort(myComparator);
         } else if (index == 0) {
             myComparator = (o1, o2) -> {
+                // id needs to specifically grab the hash code
                 int n = (o1.getKey());
                 int m = (o2.getKey());
                 return (int) Math.signum(n - m);
             };
         } else {
             myComparator = (o1, o2) -> {
+                // all remaining fields are strings and can be sorted as strings
                 String s = o1.getValue().get(index - 1);
                 String t = o2.getValue().get(index - 1);
                 return (int) Math.signum(s.compareTo(t));
@@ -288,6 +293,9 @@ public class CatalogueUI {
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: "); // add exit and input prompts to the end of the menu
     }
 
+    /**
+     * Selects a random entry from the catalogue and displays it
+     */
     public void randomEntry() {
         if (catalogue.isEmpty()) {
             System.out.println("No items in the catalogue to select from");
@@ -297,7 +305,7 @@ public class CatalogueUI {
         Integer randomId = (Integer) catalogue.keySet().toArray()[rand.nextInt(catalogue.size())];
         ArrayList<String> randomEntry = catalogue.get(randomId);
 
-        System.out.println("Here is a random item from the furniture catalogue: ID #" + randomId + ", The item is a " + randomEntry.get(0)); ; //Print statement
+        System.out.println("Here is a random item from the furniture catalogue: ID #" + randomId + ", The item is a " + randomEntry.get(0)); //Print statement
         for (int i = 0; i < randomEntry.size(); i++) {
             System.out.println("\t" + headers[i + 1] + ": " + randomEntry.get(i));
         }
