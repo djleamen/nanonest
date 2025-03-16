@@ -1,5 +1,6 @@
 package furnitureCatalogue;
 
+
 import furnitureCatalogue.SearchPackage.SearchController;
 import furnitureCatalogue.SearchPackage.SearchView;
 
@@ -9,6 +10,7 @@ public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
     public int[] maxLengths = new int[10];
     public CatalogueFileIO fileIO;
+    public int[] maxLengths = new int[10];
     public String[] headers;
     private Scanner s;
     private SearchController c; // Pointer to SearchController object.
@@ -58,7 +60,7 @@ public class CatalogueUI {
                     "Search", // 6
                     "Sort (much simpler than advanced search as it doesn't require any fancy search model stuff, and works on numbers)", // 7
                     "Filter", // 8
-                    "Advanced Search (Currently only sorts entire csv)", // 9
+                    "Advanced Search (Through filtering and sorting)", // 9
                     "Display Random Entry",  // My additon - Parish // 10
                     "Add a user" // 11
             } : new String[]{
@@ -539,8 +541,58 @@ public class CatalogueUI {
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: "); // add exit and input prompts to the end of the menu
     }
 
-    // Currently only sorts entire csv. Will update description as progress continues.
+    // Sorts and Filters csv by any number of categories.
     public void advancedSearch() {
+        v.filters.clear();
+        v.ranges.clear();
+
+        while(true) {
+            System.out.println("Fields: " + String.join(", ", headers));
+            System.out.print("Which field would you like to filter? (Or ENTER to proceed): ");
+            String field = s.nextLine();
+            if(field.isEmpty()) {
+                break;
+            }
+
+            int index = Arrays.asList(headers).indexOf(field);
+            if (index != -1 && index != 1) { // if field is valid for filtering
+
+                if (index == 3 || index == 4 || index == 5 || index == 6 || index == 8 || index == 9) {
+                    System.out.println("Enter value:");
+                    String filterInput;
+
+                    // get list of inputs from user to filter catalogue
+                    filterInput = s.nextLine();
+                    v.filters.put(field, filterInput);
+                }
+                else if (index == 0 || index == 2 || index == 7 || index == 10) {
+                    System.out.println("Enter minimum value for " + field + ": ");
+                    String minInput = s.nextLine();
+                    System.out.println("Enter maximum value for " + field + ": ");
+                    String maxInput = s.nextLine();
+                    if (minInput.matches("-?\\d+") && maxInput.matches("-?\\d+")) {
+                        // check that the inputs are integers (negative numbers allowed)
+                        int minValue = Integer.parseInt(minInput);
+                        int maxValue = Integer.parseInt(maxInput);
+
+                        if (minValue > maxValue) {
+                            // swap values if min is more than max
+                            int temp = minValue;
+                            minValue = maxValue;
+                            maxValue = temp;
+                        }
+                        ArrayList<String> input = new ArrayList<>();
+                        input.add(String.valueOf(minValue));
+                        input.add(String.valueOf(maxValue));
+                        v.ranges.put(field, input);
+                    } else System.out.println("Invalid input (must be integers)");
+                }
+            }
+            else {
+                System.out.println(field + " is not a valid field to filter with.");
+            }
+        }
+
         // Feel free to change this however you like when adding prompts for filters
         System.out.println("Sort by what category?");
         v.sortCategory = s.nextLine();
@@ -556,6 +608,7 @@ public class CatalogueUI {
             System.out.println("Invalid Input.");
             return;
         }
+        printTableHeader();
         c.searchQuery();
     }
 
