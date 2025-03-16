@@ -1,15 +1,13 @@
 package furnitureCatalogue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Random;
+import java.util.*;
+
 import furnitureCatalogue.SearchPackage.*;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
     public CatalogueFileIO fileIO;
+    public int[] maxLengths = new int[10];
     public String[] headers;
     private Scanner s;
     private SearchController c; // Pointer to SearchController object.
@@ -42,7 +40,7 @@ public class CatalogueUI {
                     "Remove an entry",
                     "View Specific Entry",
                     "Search by ID",
-                    "Advanced Search (Currently only sorts entire csv)",
+                    "Advanced Search (Through filtering and sorting)",
                     "Display Random Entry"  // My additon - Parish
             };
             printMenu(menuOptions);
@@ -80,6 +78,41 @@ public class CatalogueUI {
             }
         }
         s.close();
+    }
+
+    /**
+     * Prints one line to the console with all the headers, each with enough space to accommodate the longest entry.
+     */
+    private void printTableHeader() {
+        StringBuilder headerString = new StringBuilder("id\t");
+        for (int i = 1; i < headers.length; i++) {
+            headerString.append(headers[i]);
+            // calculate how much space each column needs, and insert that amount of space
+            for (int j = 0; j <= Math.ceil((double) (maxLengths[i - 1]) / 4.0) - Math.floor((double) (headers[i].length()) / 4.0); j++) {
+                headerString.append("\t");
+            }
+        }
+        System.out.println(headerString);
+    }
+
+    /**
+     * Prints one row of the output table to the console
+     *
+     * @param entry the entry to print a row for
+     */
+    private void printTableRow(Map.Entry<Integer, ArrayList<String>> entry) {
+        Integer key = entry.getKey();
+        ArrayList<String> value = entry.getValue();
+        // prints each entry into a table
+        StringBuilder itemString = new StringBuilder(key + "\t");
+        for (int i = 0; i < value.size(); i++) {
+            itemString.append(value.get(i));
+            // calculate how much space each column needs, and insert that amount of space
+            for (int j = 0; j <= Math.ceil((double) (maxLengths[i]) / 4.0) - Math.floor((double) (value.get(i).length()) / 4.0); j++) {
+                itemString.append("\t");
+            }
+        }
+        System.out.println(itemString);
     }
 
     /**
@@ -198,8 +231,58 @@ public class CatalogueUI {
         System.out.print((menuOptions.length + 1) + ". Exit\nInput: "); // add exit and input prompts to the end of the menu
     }
 
-    // Currently only sorts entire csv. Will update description as progress continues.
+    // Sorts and Filters csv by any number of categories.
     public void advancedSearch() {
+        v.filters.clear();
+        v.ranges.clear();
+
+        while(true) {
+            System.out.println("Fields: " + String.join(", ", headers));
+            System.out.print("Which field would you like to filter? (Or ENTER to proceed): ");
+            String field = s.nextLine();
+            if(field.isEmpty()) {
+                break;
+            }
+
+            int index = Arrays.asList(headers).indexOf(field);
+            if (index != -1 && index != 1) { // if field is valid for filtering
+
+                if (index == 3 || index == 4 || index == 5 || index == 6 || index == 8 || index == 9) {
+                    System.out.println("Enter value:");
+                    String filterInput;
+
+                    // get list of inputs from user to filter catalogue
+                    filterInput = s.nextLine();
+                    v.filters.put(field, filterInput);
+                }
+                else if (index == 0 || index == 2 || index == 7 || index == 10) {
+                    System.out.println("Enter minimum value for " + field + ": ");
+                    String minInput = s.nextLine();
+                    System.out.println("Enter maximum value for " + field + ": ");
+                    String maxInput = s.nextLine();
+                    if (minInput.matches("-?\\d+") && maxInput.matches("-?\\d+")) {
+                        // check that the inputs are integers (negative numbers allowed)
+                        int minValue = Integer.parseInt(minInput);
+                        int maxValue = Integer.parseInt(maxInput);
+
+                        if (minValue > maxValue) {
+                            // swap values if min is more than max
+                            int temp = minValue;
+                            minValue = maxValue;
+                            maxValue = temp;
+                        }
+                        ArrayList<String> input = new ArrayList<>();
+                        input.add(String.valueOf(minValue));
+                        input.add(String.valueOf(maxValue));
+                        v.ranges.put(field, input);
+                    } else System.out.println("Invalid input (must be integers)");
+                }
+            }
+            else {
+                System.out.println(field + " is not a valid field to filter with.");
+            }
+        }
+
         // Feel free to change this however you like when adding prompts for filters
         System.out.println("Sort by what category?");
         v.sortCategory = s.nextLine();
@@ -215,6 +298,7 @@ public class CatalogueUI {
             System.out.println("Invalid Input.");
             return;
         }
+        printTableHeader();
         c.searchQuery();
     }
 
