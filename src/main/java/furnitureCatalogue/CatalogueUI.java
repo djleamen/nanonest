@@ -506,29 +506,24 @@ public class CatalogueUI {
      * Allows the user to search based on the name of the item
      */
     public void specificSearch() {
-        int id;
-        while (true) {
-            System.out.print("Enter ID to search: ");
-            String inp = s.nextLine();
-            if (inp.isEmpty()) {
-                System.out.println("Blank input detected (Returning).");
-                return;
-            }
-            try {
-                id = Integer.parseInt(inp);
-                if (!catalogue.containsKey(id)) {
-                    System.out.println("ID not found. Please try again.");
-                } else {
-                    break;
+        System.out.print("Enter name to search: ");
+        String inp = s.nextLine();
+        if (inp.isEmpty()) {
+            System.out.println("Blank input detected (Returning).");
+            return;
+        }
+        boolean found = false;
+        for (ArrayList<String> value : catalogue.values()) {
+            if (value.getFirst().equals(inp)) {
+                found = true;
+                System.out.println(inp);
+                for (int i = 0; i < value.size(); i++) {
+                    System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. ID must be a number. Please try again.");
             }
         }
-        ArrayList<String> value = catalogue.get(id);
-        System.out.println("ID: " + id);
-        for (int i = 0; i < value.size(); i++) {
-            System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
+        if (!found) {
+            System.out.println("No item found with that name");
         }
     }
 
