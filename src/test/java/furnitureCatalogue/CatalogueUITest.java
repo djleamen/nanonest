@@ -4,12 +4,12 @@ import org.junit.jupiter.api.*;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CatalogueUITest {
+public class CatalogueUITest {
     private CatalogueUI ui;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
@@ -24,13 +24,19 @@ class CatalogueUITest {
             }
         };
 
-        // Set up sample headers and a sample catalogue
-        ui.headers = new String[] {"ID", "Type", "Material"};
-        ui.catalogue = new HashMap<>();
+        // Set up a sample entry for testing
         ArrayList<String> entry = new ArrayList<>();
+        entry.add("Blue Wooden Chair");
+        entry.add("250");
         entry.add("Chair");
+        entry.add("Blue");
         entry.add("Wooden");
-        ui.catalogue.put(1, entry);
+        entry.add("Large");
+        entry.add("75");
+        entry.add("Leon's");
+        entry.add("Modern");
+        entry.add("122");
+        ui.catalogue.put(193, entry);
 
         // Redirect System.out to capture printed output
         System.setOut(new PrintStream(outContent));
@@ -46,13 +52,13 @@ class CatalogueUITest {
         ui.displayEntries();
         String output = outContent.toString();
         // Expect the output to show the entry’s ID and its first field (i.e. "Type")
-        assertTrue(output.contains("1: Chair"), "Output should display the entry with ID 1 and its type.");
+        assertTrue(output.contains("193\tBlue Wooden Chair"), "Output should display the entry with ID 193 and its type.");
     }
 
     @Test
     void testViewEntry() throws Exception {
-        // Simulate user input "1" for viewEntry
-        String simulatedInput = "1\n";
+        // Simulate user input "193" for viewEntry
+        String simulatedInput = "193\n";
         Scanner testScanner = new Scanner(simulatedInput);
         Field scannerField = CatalogueUI.class.getDeclaredField("s");
         scannerField.setAccessible(true);
@@ -61,16 +67,16 @@ class CatalogueUITest {
         outContent.reset();
         ui.viewEntry();
         String output = outContent.toString();
-        assertTrue(output.contains("Type: Chair"), "Output should contain the type of the entry.");
-        assertTrue(output.contains("Material: Wooden"), "Output should contain the material of the entry.");
+        assertTrue(output.contains("Name: Blue Wooden Chair"), "Output should contain the type of the entry.");
+        assertTrue(output.contains("Price: 250"), "Output should contain the material of the entry.");
     }
 
     @Test
     void testEditEntry() throws Exception {
-        // Entry with ID 1 initially has: ["Chair", "Wooden"]
-        // Simulate input: first the entry ID ("1"), then new data for each field.
-        // For example, change "Chair" to "Armchair" and leave "Wooden" unchanged.
-        String simulatedInput = "1\nArmchair\n\n";
+        // Entry with ID 193 initially has: ["Blue Wooden Chair", "250"]
+        // Simulate input: first the entry ID ("193"), then new data for each field.
+        // For example, change "Blue Wooden Chair" to "Blue Wooden Armchair" and leave "250" unchanged.
+        String simulatedInput = "193\nBlue Wooden Armchair\n\n\n\n\n\n\n\n\n\n";
         Scanner testScanner = new Scanner(simulatedInput);
         Field scannerField = CatalogueUI.class.getDeclaredField("s");
         scannerField.setAccessible(true);
@@ -78,32 +84,18 @@ class CatalogueUITest {
 
         ui.editEntry();
         // Verify that the entry has been updated accordingly
-        ArrayList<String> updatedEntry = ui.catalogue.get(1);
-        assertEquals("Armchair", updatedEntry.get(0), "First field should be updated to Armchair.");
-        assertEquals("Wooden", updatedEntry.get(1), "Second field should remain Wooden.");
-    }
-
-    @Test
-    void testAddEntry() throws Exception {
-        // Simulate adding an entry with ID "2" and data for each field.
-        String simulatedInput = "2\nTable\nMetal\n";
-        Scanner testScanner = new Scanner(simulatedInput);
-        Field scannerField = CatalogueUI.class.getDeclaredField("s");
-        scannerField.setAccessible(true);
-        scannerField.set(ui, testScanner);
-
-        ui.addEntry();
-        // Check that the new entry with ID 2 is added with the correct values.
-        ArrayList<String> newEntry = ui.catalogue.get(2);
-        assertNotNull(newEntry, "New entry should be added.");
-        assertEquals("Table", newEntry.get(0), "Type should be Table.");
-        assertEquals("Metal", newEntry.get(1), "Material should be Metal.");
+        ArrayList<String> updatedEntry = ui.catalogue.get(193);
+        assertEquals("Blue Wooden Armchair", updatedEntry.get(0), "First field should be updated to Blue Wooden Armchair.");
+        assertEquals("250", updatedEntry.get(1), "Second field should remain 250.");
     }
 
     @Test
     void testRemoveEntry() throws Exception {
-        // Simulate removing the entry with ID "1"
-        String simulatedInput = "1\n";
+        // place an entry to remove
+        ui.fileIO.addCSVLine("192,Armchair,250,Chair,Blue,Wooden,Large,75,Leon's,Modern,122");
+        ui.catalogue.put(192, new ArrayList<>(Arrays.asList("Armchair","250","Chair","Blue","Wooden","Large","75","Leon's","Modern","122")));
+        // Simulate removing the entry with ID "192"
+        String simulatedInput = "192\n";
         Scanner testScanner = new Scanner(simulatedInput);
         Field scannerField = CatalogueUI.class.getDeclaredField("s");
         scannerField.setAccessible(true);
@@ -111,17 +103,36 @@ class CatalogueUITest {
 
         outContent.reset();
         ui.removeEntry();
-        // Verify that the entry with ID 1 no longer exists in the catalogue
-        assertFalse(ui.catalogue.containsKey(1), "Entry with ID 1 should be removed.");
+        // Verify that the entry with ID 192 no longer exists in the catalogue
+        assertFalse(ui.catalogue.containsKey(192), "Entry with ID 192 should be removed.");
         String output = outContent.toString();
         assertTrue(output.contains("Entry removed successfully."), "Output should confirm deletion.");
     }
 
     @Test
+    void testAddEntry() throws Exception {
+        // Simulate adding an entry with ID "192" and data for each field.
+        String simulatedInput = "192\nTable\nMetal\n\n\n\n\n\n\n\n\n";
+        Scanner testScanner = new Scanner(simulatedInput);
+        Field scannerField = CatalogueUI.class.getDeclaredField("s");
+        scannerField.setAccessible(true);
+        scannerField.set(ui, testScanner);
+
+        ui.addEntry();
+        // Check that the new entry with ID 192 is added with the correct values.
+        ArrayList<String> newEntry = ui.catalogue.get(192);
+        assertNotNull(newEntry, "New entry should be added.");
+        assertEquals("Table", newEntry.get(0), "Type should be Table.");
+        assertEquals("Metal", newEntry.get(1), "Material should be Metal.");
+        // remove it from the file
+        ui.fileIO.deleteCSVLine("192");
+    }
+
+    @Test
     void testSpecificSearch() throws Exception {
         // The specificSearch method looks for an entry whose first field matches the input.
-        // In our test data, the entry with ID 1 has "Chair" as its first field.
-        String simulatedInput = "Chair\n";
+        // In our test data, the entry with ID 193 has "Blue Wooden Chair" as its first field.
+        String simulatedInput = "Blue Wooden Chair\n";
         Scanner testScanner = new Scanner(simulatedInput);
         Field scannerField = CatalogueUI.class.getDeclaredField("s");
         scannerField.setAccessible(true);
@@ -131,6 +142,6 @@ class CatalogueUITest {
         ui.specificSearch();
         String output = outContent.toString();
         // Verify that the search output includes details of the matching entry.
-        assertTrue(output.contains("Type: Chair"), "Search output should include the entry type.");
+        assertTrue(output.contains("Name: Blue Wooden Chair"), "Search output should include the entry type.");
     }
 }
