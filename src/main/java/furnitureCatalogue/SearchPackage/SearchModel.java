@@ -29,20 +29,37 @@ public class SearchModel {
     public void query() {
         String url = "src/main/resources/" + fileName;
         String order;
+        String filter = "";
         if(controller.sortMode) {
             order = " ASC";
         }
         else {
             order = " DESC";
         }
+
+        for(String s : controller.filters.keySet()) {
+            filter += s + " = '" + controller.filters.get(s) + "' AND ";
+//            filter += s + " = '" + controller.filters.get(s) + "' ";
+        }
+        for(String s : controller.ranges.keySet()) {
+            filter += s + " BETWEEN " + controller.ranges.get(s).get(0) + " AND " + controller.ranges.get(s).get(1) + " AND ";
+            System.out.print(filter);
+        }
+        filter = filter.substring(0, filter.length()-4);
+        System.out.println(filter);
+
         try(Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement("CREATE TABLE t AS SELECT * FROM CSVREAD('" + url + "')");
             load.execute();
 
-//            PreparedStatement reformat = connection.prepareStatement("ALTER TABLE t MODIFY COLUMN id INTEGER");
-//            reformat.execute();
+            PreparedStatement reformat = connection.prepareStatement("ALTER TABLE t ALTER COLUMN id INTEGER;" +
+            "ALTER TABLE t ALTER COLUMN Quantity INTEGER;" +
+            "ALTER TABLE t ALTER COLUMN Weight INTEGER;");
+            reformat.execute();
 
-            PreparedStatement search = connection.prepareStatement("SELECT * FROM t ORDER BY " + controller.sortCategory + order);
+//            PreparedStatement search = connection.prepareStatement("SELECT * FROM t WHERE " + filter + "Name = '%" + controller.query + "%' ORDER BY " + controller.sortCategory + order);
+            PreparedStatement search = connection.prepareStatement("SELECT * FROM t WHERE " +
+            filter + " ORDER BY " + controller.sortCategory + order);
             ResultSet queryResult = search.executeQuery();
             while(queryResult.next()) {
                 System.out.println(queryResult.getInt("id") + " - " + queryResult.getString("Name"));
