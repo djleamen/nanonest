@@ -39,11 +39,19 @@ public class CatalogueFileIO {
                 UI.catalogue.put(Integer.parseInt(line[0]), temp);
             }
             fileScanner.close();
+            for (int i = 1; i < UI.headers.length; i++) {
+                int maxLength = 0;
+                for (ArrayList<String> entry : UI.catalogue.values()) {
+                    if (entry.get(i - 1).length() > maxLength) {
+                        maxLength = entry.get(i - 1).length();
+                    }
+                }
+                UI.maxLengths[i - 1] = maxLength;
+            }
         } catch (FileNotFoundException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     /**
      * Adds a new line to the bottom of the CSV file
@@ -133,4 +141,8 @@ public class CatalogueFileIO {
         return UI.catalogue.get(randomId);
     }
 
+    public List<String> relevancySearch(String search) {
+        List<String> results = new ArrayList<>();
+        return results;
+    }
 }
