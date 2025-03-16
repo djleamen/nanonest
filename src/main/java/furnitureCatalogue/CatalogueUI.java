@@ -1,12 +1,9 @@
 package furnitureCatalogue;
 
+import furnitureCatalogue.SearchPackage.SearchController;
+import furnitureCatalogue.SearchPackage.SearchView;
+
 import java.util.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Random;
-import furnitureCatalogue.SearchPackage.*;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
@@ -47,22 +44,21 @@ public class CatalogueUI {
         // prints the menu options based on the role of the user
         while (running) {
             String[] menuOptions = role.equals("admin") ? new String[]{
-                    "Display all Entries",
-                    "Edit an entry",
-                    "Add an entry",
-                    "Remove an entry",
-                    "View Specific Entry",
-                    "Search",
-                    "Sort",
-                    "Filter",
-                    "Search by ID",
-                    "Advanced Search (Currently only sorts entire csv)",
-                    "Display Random Entry",  // My additon - Parish
-                    "Add a user"
+                    "Display all Entries", // 1
+                    "Edit an entry", // 2
+                    "Add an entry", // 3
+                    "Remove an entry", // 4
+                    "View Specific Entry", // 5
+                    "Search", // 6
+                    "Sort (much simpler than advanced search as it doesn't require any fancy search model stuff, and works on numbers)", // 7
+                    "Filter", // 8
+                    "Advanced Search (Currently only sorts entire csv)", // 9
+                    "Display Random Entry",  // My additon - Parish // 10
+                    "Add a user" // 11
             } : new String[]{
-                    "Display all Entries",
-                    "View Specific Entry",
-                    "Search"
+                    "Display all Entries", // 1
+                    "View Specific Entry", // 2
+                    "Search" // 3
             };
             printMenu(menuOptions);
             String inp = s.nextLine();
@@ -89,24 +85,21 @@ public class CatalogueUI {
                     if (role.equals("admin")) specificSearch();
                     break;
                 case "7":
-                    advancedSearch();
+                    if (role.equals("admin")) sortEntries();
                     break;
                 case "8":
-                    sortEntries();
+                    if (role.equals("admin")) filterEntries();
                     break;
                 case "9":
-                    filterEntries();
+                    if (role.equals("admin")) advancedSearch();
                     break;
                 case "10":
-                    randomEntry();
+                    if (role.equals("admin")) randomEntry();
                     break;
                 case "11":
-                    randomEntry();
-                    break;
-                case "12":
                     if (role.equals("admin")) Login.makeUser();
                     break;
-                case "13":
+                case "12":
                     if (role.equals("admin")) running = false;
                     break;
                 default:
@@ -361,7 +354,7 @@ public class CatalogueUI {
             for (int i = 0; i < value.size(); i++) {
                 System.out.print("Input new " + headers[i + 1] + " to replace " + value.get(i) + ": ");
                 String input = s.nextLine();
-                if (input.equals("")) {
+                if (input.isEmpty()) {
                     value.set(i, value.get(i));
                 } else {
                     value.set(i, input);
@@ -472,6 +465,4 @@ public class CatalogueUI {
             System.out.println("\t" + headers[i + 1] + ": " + randomEntry.get(i));
         }
     }
-
-
 }
