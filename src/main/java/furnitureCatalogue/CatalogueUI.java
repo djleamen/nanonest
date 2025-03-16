@@ -57,9 +57,9 @@ public class CatalogueUI {
                     "Remove an entry", // 4
                     "View Specific Entry", // 5
                     "Search", // 6
-                    "Sort (much simpler than advanced search as it doesn't require any fancy search model stuff, and works on numbers)", // 7
+                    "Sort", // 7
                     "Filter", // 8
-                    "Advanced Search (Through filtering and sorting)", // 9
+                    "Advanced Search (Through Filtering And Sorting)", // 9
                     "Display Random Entry",  // My additon - Parish // 10
                     "Add a user" // 11
             } : new String[]{

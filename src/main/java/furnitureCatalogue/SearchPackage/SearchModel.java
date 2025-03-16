@@ -39,14 +39,11 @@ public class SearchModel {
 
         for(String s : controller.filters.keySet()) {
             filter += s + " = '" + controller.filters.get(s) + "' AND ";
-//            filter += s + " = '" + controller.filters.get(s) + "' ";
         }
         for(String s : controller.ranges.keySet()) {
             filter += s + " BETWEEN " + controller.ranges.get(s).get(0) + " AND " + controller.ranges.get(s).get(1) + " AND ";
-            System.out.print(filter);
         }
-        filter = filter.substring(0, filter.length()-4);
-        System.out.println(filter);
+        filter = filter.substring(0, filter.length() - 4);
 
         try(Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement("CREATE TABLE t AS SELECT * FROM CSVREAD('" + url + "')");
@@ -62,8 +59,19 @@ public class SearchModel {
             filter + " ORDER BY " + controller.sortCategory + order);
             ResultSet queryResult = search.executeQuery();
             while(queryResult.next()) {
-                System.out.println(queryResult.getInt("id") + " - " + queryResult.getString("Name"));
+                System.out.println(queryResult.getInt("id") + " - " +
+                queryResult.getString("Name") + " - " +
+                queryResult.getString("Price") + " - " +
+                queryResult.getString("Furniture Type") + " - " +
+                queryResult.getString("Colour") + " - " +
+                queryResult.getString("Materials") + " - " +
+                queryResult.getString("Size") + " - " +
+                queryResult.getString("Quantity") + " - " +
+                queryResult.getString("Company") + " - " +
+                queryResult.getString("Style") + " - " +
+                queryResult.getString("Weight"));
             }
+            System.out.println();
         }
         catch (SQLException e) {
             e.printStackTrace();
