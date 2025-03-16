@@ -1,13 +1,6 @@
 package furnitureCatalogue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Random;
-import java.util.Objects;
-import java.util.List;
-import java.util.Comparator;
+import java.util.*;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
@@ -41,6 +34,7 @@ public class CatalogueUI {
                     "View Specific Entry",
                     "Search",
                     "Sort",
+                    "Filter",
                     "Display Random Entry"  // My additon - Parish
             };
             printMenu(menuOptions);
@@ -68,9 +62,12 @@ public class CatalogueUI {
                     sortEntries();
                     break;
                 case "8":
-                    randomEntry();
+                    filterEntries();
                     break;
                 case "9":
+                    randomEntry();
+                    break;
+                case "10":
                     running = false;
                     break;
                 default:
@@ -78,6 +75,112 @@ public class CatalogueUI {
             }
         }
         s.close();
+    }
+
+    /**
+     * Filters catalogue list based on input provided by the user.
+     */
+    private void filterEntries() {
+        System.out.println("Fields: " + String.join(", ", headers));
+        System.out.print("Which field would you like to filter?: ");
+        String field = s.nextLine();
+        int index = Arrays.asList(headers).indexOf(field);
+        if (index != -1 && index != 1) { // if field is valid for filtering
+            if (index == 3 || index == 4 || index == 5 || index == 6 || index == 8 || index == 9) {
+                // This field has a small set of possible values e.g. Small, Medium, Large
+                Set<String> mySet = new HashSet<>();
+                for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet()) {
+                    // use set to remove duplicates in order to show list of possible values
+                    mySet.add(entry.getValue().get(index - 1));
+                }
+                System.out.println("Possible values of " + field + ": " + String.join(", ", mySet));
+                System.out.println("Enter values to add them to the whitelist, prepend with '!' to add to the blacklist.");
+                String filterInput;
+                ArrayList<String> whitelist = new ArrayList<>();
+                ArrayList<String> blacklist = new ArrayList<>();
+                while (true) {
+                    // get list of inputs from user to filter catalogue
+                    filterInput = s.nextLine();
+                    if (filterInput.isEmpty()) break;
+                    if (filterInput.charAt(0) == '!') {
+                        // add to blacklist instead if '!'
+                        filterInput = filterInput.substring(1);
+                        if (mySet.contains(filterInput))
+                            blacklist.add(filterInput); // make sure input is one of the possible values
+                    } else if (mySet.contains(filterInput)) whitelist.add(filterInput);
+                }
+                printTableHeader();
+                for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet()) {
+                    // print entry only if it matches the criteria
+                    if ((!whitelist.isEmpty() && whitelist.contains(entry.getValue().get(index - 1)))) {
+                        printTableRow(entry);
+                    } else if (!blacklist.contains(entry.getValue().get(index - 1)) && !blacklist.isEmpty()) {
+                        printTableRow(entry);
+                    }
+                }
+            } else if (index == 2 || index == 7 || index == 10) {
+                // This field contains an integer from a range
+                int min = Integer.MAX_VALUE;
+                int max = Integer.MIN_VALUE;
+                for (ArrayList<String> entry : catalogue.values()) {
+                    // find the max and min possible values in this field
+                    if (Integer.parseInt(entry.get(index - 1)) > max)
+                        max = Integer.parseInt(entry.get(index - 1));
+                    if (Integer.parseInt(entry.get(index - 1)) < min)
+                        min = Integer.parseInt(entry.get(index - 1));
+                }
+                System.out.println(field + " ranges from " + min + " to " + max);
+                System.out.println("Enter minimum value for " + field + ": ");
+                String minInput = s.nextLine();
+                System.out.println("Enter maximum value for " + field + ": ");
+                String maxInput = s.nextLine();
+                if (minInput.matches("-?\\d+") && maxInput.matches("-?\\d+")) {
+                    // check that the inputs are integers (negative numbers allowed)
+                    int minValue = Integer.parseInt(minInput);
+                    int maxValue = Integer.parseInt(maxInput);
+                    if (minValue >= min && minValue <= max && maxValue <= max && maxValue >= min) { // make sure filter range is within the catalogue's range
+                        if (minValue > maxValue) {
+                            // swap values if min is more than max
+                            int temp = minValue;
+                            minValue = maxValue;
+                            maxValue = temp;
+                        }
+                        printTableHeader();
+                        for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet())
+                            // print only if value within specified range
+                            if (Integer.parseInt(entry.getValue().get(index - 1)) <= maxValue && Integer.parseInt(entry.getValue().get(index - 1)) >= minValue)
+                                printTableRow(entry);
+                    } else System.out.println("Inputs must be between " + min + " and " + max);
+                } else System.out.println("Invalid input (must be integers)");
+            } else if (index == 0) {
+                // ID is a special case of integers as it is the hash key
+                int min = Integer.MAX_VALUE;
+                int max = Integer.MIN_VALUE;
+                for (Integer entry : catalogue.keySet()) {
+                    if (entry > max) max = entry;
+                    if (entry < min) min = entry;
+                }
+                System.out.println(field + " ranges from " + min + " to " + max);
+                System.out.println("Enter minimum value for " + field + ": ");
+                String minInput = s.nextLine();
+                System.out.println("Enter maximum value for " + field + ": ");
+                String maxInput = s.nextLine();
+                if (minInput.matches("-?\\d+") && maxInput.matches("-?\\d+")) {
+                    int minValue = Integer.parseInt(minInput);
+                    int maxValue = Integer.parseInt(maxInput);
+                    if (minValue >= min && minValue <= max && maxValue <= max && maxValue >= min) {
+                        if (minValue > maxValue) {
+                            int temp = minValue;
+                            minValue = maxValue;
+                            maxValue = temp;
+                        }
+                        printTableHeader();
+                        for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet())
+                            if (entry.getKey() <= maxValue && entry.getKey() >= minValue) printTableRow(entry);
+                    } else System.out.println("Inputs must be between " + min + " and " + max);
+                } else System.out.println("Invalid input (must be integers)");
+            }
+        } else System.out.println(field + " is not a valid field to filter with.");
     }
 
 
@@ -88,8 +191,8 @@ public class CatalogueUI {
         System.out.println("Fields: " + String.join(", ", headers));
         System.out.print("Which field would you like to sort by?: ");
         String field = s.nextLine();
-        int index = java.util.Arrays.asList(headers).indexOf(field);
-        if (index != -1) { // if header was valid (included in the headers array)
+        int index = Arrays.asList(headers).indexOf(field);
+        if (index != -1) { // if field is valid (included in the headers array)
             System.out.print("Ascending or Descending? (A/D): ");
             String inp = s.nextLine();
             if (Objects.equals(inp, "A") || Objects.equals(inp, "D")) {
