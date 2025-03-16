@@ -36,7 +36,7 @@ public class CatalogueUI {
                     "Remove an entry",
                     "View Specific Entry",
                     "Search",
-                    "Display Random Entry"  // My additon - Parish
+                    "Display Random Entry"
             };
             printMenu(menuOptions);
             String inp = s.nextLine();
@@ -72,6 +72,33 @@ public class CatalogueUI {
         s.close();
     }
 
+    // Helper method for PotatoFix, making it so that inputs for the fields that should use numbers can ONLY be numbers
+    private String getValidatedNumericInput(String fieldName, String currentValue) {
+        while (true) {
+            if (currentValue != null) {
+                System.out.print("Input new " + fieldName + " to replace " + currentValue + ": ");
+            } else {
+                System.out.print("Input " + fieldName + ": ");
+            }
+            String input = s.nextLine();
+            if (input.isEmpty()) {
+                if (currentValue != null) {
+                    return currentValue;
+                } else {
+                    // For adding an items only, allowing for blank fields
+                    return "";
+                }
+            }
+            try {
+                Double.parseDouble(input);
+                return input;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. " + fieldName + " must be a number.");
+            }
+        }
+    }
+
+
     /**
      * Prints out the entire catalogue to the command line without showing all the details of every item
      */
@@ -90,15 +117,29 @@ public class CatalogueUI {
      * Prompts the user to select a specific entry, and then displays all its information
      */
     public void viewEntry() {
-        System.out.print("Choose Entry by ID: ");
-        String inp = s.nextLine();
-        if (catalogue.containsKey(Integer.parseInt(inp))) {
-            ArrayList<String> value = catalogue.get(Integer.parseInt(inp));
-            System.out.println(inp); // prints id
-            // lists all attributes of entry
-            for (int i = 0; i < value.size(); i++) {
-                System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
+        int id;
+        while (true) {
+            System.out.print("Choose Entry by ID: ");
+            String inp = s.nextLine();
+            if (inp.isEmpty()) {
+                System.out.println("Blank input detected (Returning).");
+                return;
             }
+            try {
+                id = Integer.parseInt(inp);
+                if (!catalogue.containsKey(id)) {
+                    System.out.println("ID not found. Please try again.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. ID must be a number. Please try again.");
+            }
+        }
+        ArrayList<String> value = catalogue.get(id);
+        System.out.println("ID: " + id);
+        for (int i = 0; i < value.size(); i++) {
+            System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
         }
     }
 
@@ -106,73 +147,141 @@ public class CatalogueUI {
      * Prompts the user to select a specific entry, then prompts the user to provide new information for each field
      */
     public void editEntry() {
-        System.out.print("Choose Entry by ID: ");
-        String inp = s.nextLine();
-        if (catalogue.containsKey(Integer.parseInt(inp))) {
-            ArrayList<String> value = catalogue.get(Integer.parseInt(inp));
-            // loops through all headers, prompting the user for data to replace previous data
-            for (int i = 0; i < value.size(); i++) {
-                System.out.print("Input new " + headers[i + 1] + " to replace " + value.get(i) + ": ");
-                String input = s.nextLine();
-                if (input.equals("")) {
-                    value.set(i, value.get(i));
+        int id;
+        while (true) {
+            System.out.print("Choose Entry by ID: ");
+            String inp = s.nextLine();
+            if (inp.isEmpty()) {
+                System.out.println("Blank input detected (Returning).");
+                return;
+            }
+            try {
+                id = Integer.parseInt(inp);
+                if (!catalogue.containsKey(id)) {
+                    System.out.println("ID not found. Please try again.");
                 } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. ID must be a number. Please try again.");
+            }
+        }
+        ArrayList<String> value = catalogue.get(id);
+        for (int i = 0; i < value.size(); i++) {
+            String field = headers[i + 1];
+            if (field.equalsIgnoreCase("Price") ||
+                    field.equalsIgnoreCase("Quantity") ||
+                    field.equalsIgnoreCase("Weight")) {
+                String input = getValidatedNumericInput(field, value.get(i));
+                value.set(i, input);
+            } else {
+                System.out.print("Input new " + field + " to replace " + value.get(i) + ": ");
+                String input = s.nextLine();
+                if (!input.equals("")) {
                     value.set(i, input);
                 }
             }
-            catalogue.put(Integer.parseInt(inp), value);
-            fileIO.editCSVLine(inp, inp + "," + String.join(",", value));
         }
+        catalogue.put(id, value);
+        fileIO.editCSVLine(String.valueOf(id), id + "," + String.join(",", value));
     }
 
     /**
      * Prompts the user for information to create a new entry
      */
     public void addEntry() {
-        System.out.print("Choose ID for Entry: ");
-        String inp = s.nextLine();
-        ArrayList<String> value = new ArrayList<>();
-        // loops through all headers, prompting the user for data
-        for (int i = 1; i < headers.length; i++) {
-            System.out.print("Input " + headers[i] + ": ");
-            String input = s.nextLine();
-            value.add(input);
+        int id;
+        while (true) {
+            System.out.print("Choose ID for Entry: ");
+            String inp = s.nextLine();
+            if (inp.isEmpty()) {
+                System.out.println("Blank input detected (Returning).");
+                return;
+            }
+            try {
+                id = Integer.parseInt(inp);
+                if (catalogue.containsKey(id)) {
+                    System.out.println("ID already exists. Please enter a new ID.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. ID must be a number. Please try again.");
+            }
         }
-        catalogue.put(Integer.parseInt(inp), value);
-        fileIO.addCSVLine(inp + "," + String.join(",", value));
+        ArrayList<String> value = new ArrayList<>();
+        for (int i = 1; i < headers.length; i++) {
+            String field = headers[i];
+            if (field.equalsIgnoreCase("Price") ||
+                    field.equalsIgnoreCase("Quantity") ||
+                    field.equalsIgnoreCase("Weight")) {
+                String input = getValidatedNumericInput(field, null);
+                value.add(input);
+            } else {
+                System.out.print("Input " + field + ": ");
+                String input = s.nextLine();
+                value.add(input);
+            }
+        }
+        catalogue.put(id, value);
+        fileIO.addCSVLine(id + "," + String.join(",", value));
     }
 
     /**
      * Prompts the user to select a specific entry, then removes it from the Map and CSV
      */
     public void removeEntry() {
-        System.out.print("Choose ID for Entry: ");
-        String inp = s.nextLine();
-
-        if (catalogue.containsKey(Integer.parseInt(inp))) {
-            catalogue.remove(Integer.parseInt(inp));
-            fileIO.deleteCSVLine(inp); // Pass only the ID
-            System.out.println("Entry removed successfully.");
-        } else {
-            System.out.println("Entry not found.");
+        int id;
+        while (true) {
+            System.out.print("Choose ID for Entry to remove: ");
+            String inp = s.nextLine();
+            if (inp.isEmpty()) {
+                System.out.println("Blank input detected (Returning).");
+                return;
+            }
+            try {
+                id = Integer.parseInt(inp);
+                if (!catalogue.containsKey(id)) {
+                    System.out.println("ID not found. Please try again.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. ID must be a number. Please try again.");
+            }
         }
+        catalogue.remove(id);
+        fileIO.deleteCSVLine(String.valueOf(id));
+        System.out.println("Entry removed successfully.");
     }
 
     /**
      * Allows the user to search based on the name of the item
      */
     public void specificSearch() {
-        System.out.println("Enter Search: ");
-        String inp = s.nextLine();
-
-        for (ArrayList<String> value : catalogue.values()) {
-            if (value.getFirst().equals(inp)) {
-                System.out.println(inp); // prints id
-                // lists all attributes of entry
-                for (int i = 0; i < value.size(); i++) {
-                    System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
-                }
+        int id;
+        while (true) {
+            System.out.print("Enter ID to search: ");
+            String inp = s.nextLine();
+            if (inp.isEmpty()) {
+                System.out.println("Blank input detected (Returning).");
+                return;
             }
+            try {
+                id = Integer.parseInt(inp);
+                if (!catalogue.containsKey(id)) {
+                    System.out.println("ID not found. Please try again.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. ID must be a number. Please try again.");
+            }
+        }
+        ArrayList<String> value = catalogue.get(id);
+        System.out.println("ID: " + id);
+        for (int i = 0; i < value.size(); i++) {
+            System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
         }
     }
 
@@ -201,6 +310,7 @@ public class CatalogueUI {
         for (int i = 0; i < randomEntry.size(); i++) {
             System.out.println("\t" + headers[i + 1] + ": " + randomEntry.get(i));
         }
+        System.out.println();
     }
 
 
