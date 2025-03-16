@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.Objects;
+import java.util.List;
+import java.util.Comparator;
 
 public class CatalogueUI {
     public HashMap<Integer, ArrayList<String>> catalogue;
@@ -37,6 +40,7 @@ public class CatalogueUI {
                     "Remove an entry",
                     "View Specific Entry",
                     "Search",
+                    "Sort",
                     "Display Random Entry"  // My additon - Parish
             };
             printMenu(menuOptions);
@@ -61,9 +65,12 @@ public class CatalogueUI {
                     specificSearch();
                     break;
                 case "7":
-                    randomEntry();
+                    sortEntries();
                     break;
                 case "8":
+                    randomEntry();
+                    break;
+                case "9":
                     running = false;
                     break;
                 default:
@@ -71,6 +78,34 @@ public class CatalogueUI {
             }
         }
         s.close();
+    }
+
+
+    /**
+     * Sorts catalogue based on user input, and output the resulting list as a table
+     */
+    private void sortEntries() {
+        System.out.println("Fields: " + String.join(", ", headers));
+        System.out.print("Which field would you like to sort by?: ");
+        String field = s.nextLine();
+        int index = java.util.Arrays.asList(headers).indexOf(field);
+        if (index != -1) {
+            System.out.print("Ascending or Descending? (A/D): ");
+            String inp = s.nextLine();
+            if (Objects.equals(inp, "A") || Objects.equals(inp, "D")) {
+                boolean ascending = inp.equals("A");
+
+                List<Map.Entry<Integer, ArrayList<String>>> myList = getEntries(index); // convert Hash map into a sorted list
+                if (!ascending) myList = myList.reversed(); // reverse list if descending
+                printTableHeader();
+                for (Map.Entry<Integer, ArrayList<String>> entry : myList) {
+                    printTableRow(entry);
+                }
+                System.out.println("Sorted by: " + field + " (" + ((ascending) ? ("Ascending") : ("Descending")) + ")");
+            }
+        } else {
+            System.out.println(field + " is not a valid field.");
+        }
     }
 
     /**
@@ -108,7 +143,39 @@ public class CatalogueUI {
         System.out.println(itemString);
     }
 
+    /**
+     * Creates a sorted list of entries based on a provided field to sort by
+     *
+     * @param index the index of the field in the 'headers' array
+     * @return the sorted list of map entries
+     */
+    private List<Map.Entry<Integer, ArrayList<String>>> getEntries(int index) {
+        List<Map.Entry<Integer, ArrayList<String>>> myList = new ArrayList<>(catalogue.entrySet());
+        Comparator<Map.Entry<Integer, ArrayList<String>>> myComparator;
+        if (index == 2 || index == 7 || index == 10) {
+            myComparator = (o1, o2) -> {
+                int n = Integer.parseInt(o1.getValue().get(index - 1));
+                int m = Integer.parseInt(o2.getValue().get(index - 1));
+                return (int) Math.signum(n - m);
+            };
+            myList.sort(myComparator);
+        } else if (index == 0) {
+            myComparator = (o1, o2) -> {
+                int n = (o1.getKey());
+                int m = (o2.getKey());
+                return (int) Math.signum(n - m);
+            };
+        } else {
+            myComparator = (o1, o2) -> {
+                String s = o1.getValue().get(index - 1);
+                String t = o2.getValue().get(index - 1);
+                return (int) Math.signum(s.compareTo(t));
+            };
         }
+        myList.sort(myComparator);
+        return myList;
+    }
+
     /**
      * Prints out the entire catalogue to the command line as a table, showing all the details of every item
      */
