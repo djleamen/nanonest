@@ -17,11 +17,19 @@ public class CatalogueUI {
     private SearchController c; // Pointer to SearchController object.
     private SearchView v; // Pointer to SearchView object.
 
+    private String role;
     public static void main(String[] args) {
         CatalogueUI catalogueUI = new CatalogueUI();
     }
+    private Login login;
 
     public CatalogueUI() {
+        Login login = new Login();
+        role = login.authenticate();
+        if (role == null) {
+            System.out.println("Exiting...");
+            return;
+        }
         fileIO = new CatalogueFileIO("Sample.csv", this);
         c = SearchController.getInstance();
         v = SearchView.getInstance();
@@ -36,8 +44,9 @@ public class CatalogueUI {
     protected void commandLineMenu() {
         s = new Scanner(System.in);
         boolean running = true;
+        // prints the menu options based on the role of the user
         while (running) {
-            String[] menuOptions = {
+            String[] menuOptions = role.equals("admin") ? new String[]{
                     "Display all Entries",
                     "Edit an entry",
                     "Add an entry",
@@ -48,7 +57,12 @@ public class CatalogueUI {
                     "Filter",
                     "Search by ID",
                     "Advanced Search (Currently only sorts entire csv)",
-                    "Display Random Entry"  // My additon - Parish
+                    "Display Random Entry",  // My additon - Parish
+                    "Add a user"
+            } : new String[]{
+                    "Display all Entries",
+                    "View Specific Entry",
+                    "Search"
             };
             printMenu(menuOptions);
             String inp = s.nextLine();
@@ -57,19 +71,22 @@ public class CatalogueUI {
                     displayEntries();
                     break;
                 case "2":
-                    editEntry();
+                    if (role.equals("admin")) editEntry();
+                    else viewEntry();
                     break;
                 case "3":
-                    addEntry();
+                    if (role.equals("admin")) addEntry();
+                    else specificSearch();
                     break;
                 case "4":
-                    removeEntry();
+                    if (role.equals("admin")) removeEntry();
+                    else running = false;
                     break;
                 case "5":
-                    viewEntry();
+                    if (role.equals("admin")) viewEntry();
                     break;
                 case "6":
-                    specificSearch();
+                    if (role.equals("admin")) specificSearch();
                     break;
                 case "7":
                     advancedSearch();
@@ -87,7 +104,10 @@ public class CatalogueUI {
                     randomEntry();
                     break;
                 case "12":
-                    running = false;
+                    if (role.equals("admin")) Login.makeUser();
+                    break;
+                case "13":
+                    if (role.equals("admin")) running = false;
                     break;
                 default:
                     break;
@@ -341,7 +361,7 @@ public class CatalogueUI {
             for (int i = 0; i < value.size(); i++) {
                 System.out.print("Input new " + headers[i + 1] + " to replace " + value.get(i) + ": ");
                 String input = s.nextLine();
-                if (input.isEmpty()) {
+                if (input.equals("")) {
                     value.set(i, value.get(i));
                 } else {
                     value.set(i, input);
