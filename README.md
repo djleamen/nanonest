@@ -1,5 +1,8 @@
 # CSCI2040
-Project
+The purpose of this branch is to implement the password system successfully. Ideally:
+If the username/password is correct, they should be allowed to modify the database.
+Otherwise, they can only view items in the database.
+
 
 # Furniture Catalogue
 
