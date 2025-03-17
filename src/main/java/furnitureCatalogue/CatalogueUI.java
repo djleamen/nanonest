@@ -7,20 +7,15 @@ import furnitureCatalogue.SearchPackage.SearchView;
 import java.util.*;
 
 public class CatalogueUI {
+    public static int[] maxLengths = new int[10];
     public HashMap<Integer, ArrayList<String>> catalogue;
-    public int[] maxLengths = new int[10];
     public CatalogueFileIO fileIO;
     public String[] headers;
+    protected String role;
     private Scanner s;
     private SearchController c; // Pointer to SearchController object.
     private SearchView v; // Pointer to SearchView object.
     private Login login;
-
-    protected String role;
-
-    public static void main(String[] args) {
-        CatalogueUI catalogueUI = new CatalogueUI();
-    }
 
     public CatalogueUI() {
         if (inputLogin()) return;
@@ -29,6 +24,10 @@ public class CatalogueUI {
         v = SearchView.getInstance();
 //        c.searchQuery();
         commandLineMenu();
+    }
+
+    public static void main(String[] args) {
+        CatalogueUI catalogueUI = new CatalogueUI();
     }
 
     protected boolean inputLogin() {
@@ -545,11 +544,11 @@ public class CatalogueUI {
         v.filters.clear();
         v.ranges.clear();
 
-        while(true) {
+        while (true) {
             System.out.println("Fields: " + String.join(", ", headers));
             System.out.print("Which field would you like to filter? (Or ENTER to proceed): ");
             String field = s.nextLine();
-            if(field.isEmpty()) {
+            if (field.isEmpty()) {
                 break;
             }
 
@@ -563,8 +562,7 @@ public class CatalogueUI {
                     // get list of inputs from user to filter catalogue
                     filterInput = s.nextLine();
                     v.filters.put(field, filterInput);
-                }
-                else if (index == 0 || index == 2 || index == 7 || index == 10) {
+                } else if (index == 0 || index == 2 || index == 7 || index == 10) {
                     System.out.println("Enter minimum value for " + field + ": ");
                     String minInput = s.nextLine();
                     System.out.println("Enter maximum value for " + field + ": ");
@@ -586,8 +584,7 @@ public class CatalogueUI {
                         v.ranges.put(field, input);
                     } else System.out.println("Invalid input (must be integers)");
                 }
-            }
-            else {
+            } else {
                 System.out.println(field + " is not a valid field to filter with.");
             }
         }
@@ -597,13 +594,11 @@ public class CatalogueUI {
         v.sortCategory = s.nextLine();
         System.out.println("Ascending or Descending? (A/D)");
         String temp = s.nextLine();
-        if(temp.equals("A")) {
+        if (temp.equals("A")) {
             v.sortMode = true;
-        }
-        else if(temp.equals("D")) {
+        } else if (temp.equals("D")) {
             v.sortMode = false;
-        }
-        else {
+        } else {
             System.out.println("Invalid Input.");
             return;
         }
