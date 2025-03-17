@@ -1,2 +1,2 @@
 mvn package
-java -jar CatalogueUI
+java -jar ..

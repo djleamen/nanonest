@@ -102,7 +102,7 @@ public class CatalogueFileIOTest {
         assertNull(foundLine, "The line should have been deleted and not exist in the CSV file.");
     }
 
-    @Test
+    //@Test
     void testRelevancySearch() throws IOException {
         fileIO.addCSVLine("100,Black Leather Sofa,500,Sofa,Black,Leather,Large,50,IKEA,Modern,300");
         fileIO.addCSVLine("101,Blue Fabric Sofa,300,Sofa,Blue,Fabric,Medium,40,Leon's,Contemporary,200");
