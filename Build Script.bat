@@ -1,2 +1,2 @@
 mvn clean package
-java -jar CSCI2040-1.0-SNAPSHOT.jar
+java -jar target/CSCI2040-1.0-SNAPSHOT.jar
