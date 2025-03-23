@@ -66,8 +66,8 @@ public class SearchModel {
                 for (int i = 0; i < headers.size(); i++) {
                     itemString.append(queryResult.getString(headers.get(i)));
                     // Use CatalogueUI.maxLengths for spacing (assumes these are set)
-                    for (int j = 0; j <= Math.ceil((double)(CatalogueUI.maxLengths[i]) / 4.0)
-                                        - Math.floor((double)(queryResult.getString(headers.get(i)).length()) / 4.0); j++) {
+                    for (int j = 0; j <= Math.ceil((double)(CatalogueUI.maxLengths[i]) / 8.0)
+                                        - Math.floor((double)(queryResult.getString(headers.get(i)).length()) / 8.0); j++) {
                         itemString.append("\t");
                     }
                 }

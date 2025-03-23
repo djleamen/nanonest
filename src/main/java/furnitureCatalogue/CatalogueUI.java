@@ -11,12 +11,12 @@ package furnitureCatalogue;
 import furnitureCatalogue.SearchPackage.SearchController;
 import furnitureCatalogue.SearchPackage.SearchView;
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.List;
 
 public class CatalogueUI extends JFrame {
     public HashMap<Integer, ArrayList<String>> catalogue;
@@ -71,6 +71,8 @@ public class CatalogueUI extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         JTextArea outputArea = new JTextArea();
         outputArea.setEditable(false);
+        // FONT MAKES SURE THAT SPACING IS CONSISTENT, NOT NEEDED IF/WHEN A TABLE IS USED FOR OUTPUT
+        outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(outputArea);
         
         if ("admin".equals(role)) {
@@ -491,8 +493,8 @@ public class CatalogueUI extends JFrame {
         StringBuilder sb = new StringBuilder("id\t");
         for (int i = 1; i < headers.length; i++) {
             sb.append(headers[i]);
-            for (int j = 0; j <= Math.ceil((double)(maxLengths[i - 1]) / 4.0)
-                                - Math.floor((double)(headers[i].length()) / 4.0); j++) {
+            for (int j = 0; j <= Math.ceil((double)(maxLengths[i - 1]) / 8.0)
+                                - Math.floor((double)(headers[i].length()) / 8.0); j++) {
                 sb.append("\t");
             }
         }
@@ -505,8 +507,8 @@ public class CatalogueUI extends JFrame {
         StringBuilder sb = new StringBuilder(key + "\t");
         for (int i = 0; i < row.size(); i++) {
             sb.append(row.get(i));
-            for (int j = 0; j <= Math.ceil((double)(maxLengths[i]) / 4.0)
-                                - Math.floor((double)(row.get(i).length()) / 4.0); j++) {
+            for (int j = 0; j <= Math.ceil((double)(maxLengths[i]) / 8.0)
+                                - Math.floor((double)(row.get(i).length()) / 8.0); j++) {
                 sb.append("\t");
             }
         }
