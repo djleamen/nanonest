@@ -48,6 +48,6 @@ Now that it is running, you will have five options to choose from on how to use 
 7. Displays a random entry (Picks a random item by ID and displays the info)
 8. Exit (Terminates the program, saving any changes).
 
-Please note that terminating the program in other ways (i.e. shutting it down via task manager) will still keep the changes made to the database prior.
+Please note that terminating the program in other ways (i.e. shutting it down via task manager) will still keep the changes made to the database made prior.
 
 
