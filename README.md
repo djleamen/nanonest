@@ -17,7 +17,7 @@ You will need the following to be able to run and compile this program:
 
 
 1. Go to your terminal, and use the proper command to get to the folder you want to clone the repo.
-2. Use `git clone https://github.com/DylanJReynolds/CSCI2040` to clone the repository into your desired folder. You should have the file in your folder.
+2. Use `git clone https://github.com/DylanJReynolds/CSCI2040` to clone the repository into your desired folder. You should have the repo in your folder.
 4. Run `Build-Script.bat` to build a jar file of the directory that can be executed.
 
 ## How to use:
