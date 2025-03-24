@@ -43,7 +43,6 @@ public class SearchModel {
                     + " AND " + controller.ranges.get(s).get(1) + " AND ";
         }
         // Remove trailing " AND "
-//        filter = filter.substring(0, filter.length() - 4);
 
         try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement(
@@ -53,7 +52,8 @@ public class SearchModel {
             PreparedStatement reformat = connection.prepareStatement(
                     "ALTER TABLE t ALTER COLUMN id INTEGER;" +
                     "ALTER TABLE t ALTER COLUMN Quantity INTEGER;" +
-                    "ALTER TABLE t ALTER COLUMN Weight INTEGER;");
+                    "ALTER TABLE t ALTER COLUMN Weight INTEGER;" +
+                    "ALTER TABLE t ALTER COLUMN Price INTEGER;");
             reformat.execute();
 
             PreparedStatement search = connection.prepareStatement(
