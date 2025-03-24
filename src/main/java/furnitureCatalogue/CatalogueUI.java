@@ -426,6 +426,11 @@ public class CatalogueUI extends JFrame {
         v.filters.clear();
         v.ranges.clear();
         while (true) {
+            v.query = JOptionPane.showInputDialog(
+            this, "Enter name of item:");
+            break;
+        }
+        while (true) {
             String field = JOptionPane.showInputDialog(
                 this, "Enter field to filter (blank to end):");
             if (field == null || field.isEmpty()) {

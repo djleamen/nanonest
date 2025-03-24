@@ -33,6 +33,7 @@ public class SearchModel {
     public void query() {
         String url = "src/main/resources/" + fileName;
         String order = controller.sortMode ? " ASC" : " DESC";
+        String query = "%" + controller.query + "%";
         String filter = "";
         for (String s : controller.filters.keySet()) {
             filter += s + " = '" + controller.filters.get(s) + "' AND ";
@@ -42,7 +43,7 @@ public class SearchModel {
                     + " AND " + controller.ranges.get(s).get(1) + " AND ";
         }
         // Remove trailing " AND "
-        filter = filter.substring(0, filter.length() - 4);
+//        filter = filter.substring(0, filter.length() - 4);
 
         try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement(
@@ -56,7 +57,8 @@ public class SearchModel {
             reformat.execute();
 
             PreparedStatement search = connection.prepareStatement(
-                    "SELECT * FROM t WHERE " + filter + " ORDER BY " + controller.sortCategory + order);
+                    "SELECT * FROM t WHERE " + filter + "Name LIKE ? ORDER BY " + controller.sortCategory + order);
+            search.setString(1, query);
             ResultSet queryResult = search.executeQuery();
 
             List<String> headers = Arrays.asList("Name", "Price", "Furniture Type", "Colour",
