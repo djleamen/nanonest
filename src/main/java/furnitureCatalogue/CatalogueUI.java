@@ -239,28 +239,39 @@ public class CatalogueUI extends JFrame {
             System.out.println("ID not found: " + id);
             return;
         }
+
         ArrayList<String> row = catalogue.get(id);
-        for (int i = 0; i < row.size(); i++) {
-            String field = headers[i + 1];
-            String oldVal = row.get(i);
-            String newVal = JOptionPane.showInputDialog(
-                this, "Current " + field + " = '" + oldVal + "'\nEnter new (or blank to keep):");
-            if (newVal != null && !newVal.isEmpty()) {
-                if (isNumericField(field)) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JTextField[] fields = new JTextField[headers.length - 1];
+
+        for (int i = 0; i < headers.length - 1; i++) {
+            panel.add(new JLabel(headers[i + 1] + ":"));
+            fields[i] = new JTextField(row.get(i));
+            panel.add(fields[i]);
+        }
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Edit Entry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            for (int i = 0; i < fields.length; i++) {
+                String newVal = fields[i].getText();
+                if (isNumericField(headers[i + 1])) {
                     try {
                         Double.parseDouble(newVal);
                         row.set(i, newVal);
                     } catch (NumberFormatException ex) {
-                        System.out.println("Invalid numeric input, skipping.");
+                        System.out.println("Invalid numeric input for " + headers[i + 1] + ", keeping old value.");
                     }
                 } else {
                     row.set(i, newVal);
                 }
             }
+            catalogue.put(id, row);
+            fileIO.editCSVLine(String.valueOf(id), id + "," + String.join(",", row));
+            System.out.println("Updated entry for ID " + id);
+        } else {
+            System.out.println("Edit cancelled.");
         }
-        catalogue.put(id, row);
-        fileIO.editCSVLine(String.valueOf(id), id + "," + String.join(",", row));
-        System.out.println("Updated entry for ID " + id);
     }
 
     private void addEntrySwing() {
@@ -280,19 +291,40 @@ public class CatalogueUI extends JFrame {
             System.out.println("ID already exists: " + id);
             return;
         }
-        ArrayList<String> row = new ArrayList<>();
-        for (int i = 1; i < headers.length; i++) {
-            String field = headers[i];
-            String userVal = JOptionPane.showInputDialog(this, "Enter " + field + " (blank if none):");
-            if (userVal == null) {
-                System.out.println("Cancelled. Aborting add.");
-                return;
-            }
-            row.add(userVal);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JTextField[] fields = new JTextField[headers.length - 1];
+
+        for (int i = 0; i < headers.length - 1; i++) {
+            panel.add(new JLabel(headers[i + 1] + ":"));
+            fields[i] = new JTextField();
+            panel.add(fields[i]);
         }
-        catalogue.put(id, row);
-        fileIO.addCSVLine(id + "," + String.join(",", row));
-        System.out.println("Added entry ID=" + id);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Add Entry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            ArrayList<String> row = new ArrayList<>();
+            for (int i = 0; i < fields.length; i++) {
+                String value = fields[i].getText();
+                if (isNumericField(headers[i + 1])) {
+                    try {
+                        Double.parseDouble(value);
+                        row.add(value);
+                    } catch (NumberFormatException ex) {
+                        System.out.println("Invalid numeric input for " + headers[i + 1] + ", setting as blank.");
+                        row.add("");
+                    }
+                } else {
+                    row.add(value);
+                }
+            }
+            catalogue.put(id, row);
+            fileIO.addCSVLine(id + "," + String.join(",", row));
+            System.out.println("Added entry ID=" + id);
+        } else {
+            System.out.println("Add entry cancelled.");
+        }
     }
 
     private void removeEntrySwing() {
