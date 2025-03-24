@@ -10,15 +10,19 @@ The purpose of this documentation is to instruct the user how to use the furnitu
 ### Prerequisites:
 
 You will need the following to be able to run and compile this program:
-- Windows
 - The latest version of Java
 - Maven
 - Git
+- Windows (optional: recommended)
 
 
 1. Go to your terminal, and use the proper command to get to the folder you want to clone the repo.
 2. Use `git clone https://github.com/DylanJReynolds/CSCI2040` to clone the repository into your desired folder. You should have the repo in your folder.
-4. Run `Build-Script.bat` to build a jar file of the directory that can be executed.
+3. Run `Build-Script.bat` to build a jar file of the directory that can be executed.
+4. Non-Windows users: Run `mvn clean install` to compile and build a jar file, then run `java -jar target/CSCI2040-1.0-SNAPSHOT.jar` to execute.
+
+
+
 
 ## How to use:
 
