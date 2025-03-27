@@ -80,4 +80,29 @@ public class SearchModel {
             e.printStackTrace();
         }
     }
+
+    private List<PreparedStatement> formatQuery(String query, Connection conn) throws SQLException {
+        int depth = (query.length()/3) + 1;
+        if(query.length() < 4) {
+            List<PreparedStatement> queries = new ArrayList<>();
+            queries.add(conn.prepareStatement("SELECT * FROM t WHERE Name LIKE '%" + query + "%'"));
+            return queries;
+        }
+        else if(query.length() == 6) {
+            depth = 2;
+        }
+
+        return recursiveFormatQuery(query, depth, conn);
+    }
+
+    private List<PreparedStatement> recursiveFormatQuery (String query, int depth, Connection conn) throws SQLException {
+        List<PreparedStatement> queries = new ArrayList<>();
+        queries.add(conn.prepareStatement("SELECT * FROM t WHERE Name LIKE '%" + query + "%'"));
+        if(depth != 0) {
+            for (int i = 0; i < query.length(); i++) {
+                queries.addAll(recursiveFormatQuery(query.substring(0, i) + "_" + query.substring(i + 2), depth - 1, conn));
+            }
+        }
+        return queries;
+    }
 }
