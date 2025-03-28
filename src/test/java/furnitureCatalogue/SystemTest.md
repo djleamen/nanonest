@@ -34,7 +34,7 @@
 
 ## ST-05-CB
 ### Testing File Input/Output Exception Handling
-### :white_circle: Untested
+### :x: Failed
 1. Load a non-existent CSV file
 2. Attempt to write to a read-only file
 
