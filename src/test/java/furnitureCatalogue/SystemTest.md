@@ -19,7 +19,7 @@
 
 ## ST-03-OB
 ### Testing UI Navigation and Menu Interactions
-### :white_circle: Untested
+### :white_check_mark: Passed
 1. Navigate through UI menus 
 2. Select and use all of the different operations 
 3. Return to the main menu
@@ -27,7 +27,7 @@
 
 ## ST-04-TB
 ### Testing Proper Relevancy Search Results
-### :white_circle: Untested
+### :white_circle: Untested (Not Implemented Fully Yet)
 1. Perform a relevancy search
 2. View the search results and check to see the accuracy of the rankings
 
