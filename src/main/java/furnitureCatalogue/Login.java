@@ -46,12 +46,12 @@ public class Login {
     }
 
     protected String readPassword(String prompt) {
-        Console console = System.console();
-        if (console == null) {
+//        Console console = System.console();
+        if (System.console() == null) {
             System.out.print(prompt);
             return scanner.nextLine();
         } else {
-            char[] passwordArray = console.readPassword(prompt);
+            char[] passwordArray = System.console().readPassword(prompt);
             return new String(passwordArray);
         }
     }
