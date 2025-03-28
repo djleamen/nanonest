@@ -55,6 +55,8 @@ public class SearchModel {
                     "ALTER TABLE t ALTER COLUMN Weight INTEGER;" +
                     "ALTER TABLE t ALTER COLUMN Price INTEGER;");
             reformat.execute();
+            System.out.println((query.length()/3) + 1);
+//            String format = formatQuery("astic", connection);
 
             PreparedStatement search = connection.prepareStatement(
                     "SELECT * FROM t WHERE " + filter + "Name LIKE ? ORDER BY " + controller.sortCategory + order);
@@ -81,28 +83,28 @@ public class SearchModel {
         }
     }
 
-    private List<PreparedStatement> formatQuery(String query, Connection conn) throws SQLException {
+    private String formatQuery(String query, Connection conn) throws SQLException {
         int depth = (query.length()/3) + 1;
+        String formattedQuery = "SELECT * FROM t WHERE Name LIKE '%" + query + "%'";
         if(query.length() < 4) {
-            List<PreparedStatement> queries = new ArrayList<>();
-            queries.add(conn.prepareStatement("SELECT * FROM t WHERE Name LIKE '%" + query + "%'"));
-            return queries;
+            return formattedQuery;
         }
         else if(query.length() == 6) {
             depth = 2;
         }
+        System.out.println(depth);
 
-        return recursiveFormatQuery(query, depth, conn);
+        return recursiveFormatQuery(formattedQuery, query, depth, conn);
     }
 
-    private List<PreparedStatement> recursiveFormatQuery (String query, int depth, Connection conn) throws SQLException {
-        List<PreparedStatement> queries = new ArrayList<>();
-        queries.add(conn.prepareStatement("SELECT * FROM t WHERE Name LIKE '%" + query + "%'"));
-        if(depth != 0) {
+    private String recursiveFormatQuery (String formattedQuery, String query, int depth, Connection conn) throws SQLException {
+//        System.out.println(query);
+        formattedQuery += " UNION SELECT * FROM t WHERE Name LIKE '%" + query + "%'";
+        if(depth > 0) {
             for (int i = 0; i < query.length(); i++) {
-                queries.addAll(recursiveFormatQuery(query.substring(0, i) + "_" + query.substring(i + 2), depth - 1, conn));
+                query += recursiveFormatQuery(formattedQuery, query.substring(0, i) + "_" + query.substring(i + 2), depth - 1, conn);
             }
         }
-        return queries;
+        return query;
     }
 }
