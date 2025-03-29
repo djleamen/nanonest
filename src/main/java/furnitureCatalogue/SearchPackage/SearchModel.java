@@ -27,12 +27,10 @@ public class SearchModel {
         if (Objects.isNull(m)) {
             m = new SearchModel();
         }
-        System.out.println("I print something!");
         return m;
     }
 
     public void query() {
-        System.out.println("1");
         String url = "src/main/resources/" + fileName;
         String order = controller.sortMode ? " ASC" : " DESC";
         String query = "%" + controller.query + "%";
@@ -45,13 +43,11 @@ public class SearchModel {
                     + " AND " + controller.ranges.get(s).get(1) + " AND ";
         }
         // Remove trailing " AND "
-        System.out.println("2");
 
         try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement(
                     "CREATE TABLE t AS SELECT * FROM CSVREAD('" + url + "')");
             load.execute();
-            System.out.println("3");
 
             PreparedStatement reformat = connection.prepareStatement(
                     "ALTER TABLE t ALTER COLUMN id INTEGER;" +
@@ -59,19 +55,16 @@ public class SearchModel {
                     "ALTER TABLE t ALTER COLUMN Weight INTEGER;" +
                     "ALTER TABLE t ALTER COLUMN Price INTEGER;");
             reformat.execute();
-            System.out.println((query.length()/3) + 1);
             String format = formatQuery("astic", connection);
 
             PreparedStatement search = connection.prepareStatement(
                     "SELECT * FROM t WHERE " + filter + "Name LIKE ? ORDER BY " + controller.sortCategory + order);
             search.setString(1, query);
-            System.out.println("4");
             ResultSet queryResult = search.executeQuery();
 
             List<String> headers = Arrays.asList("Name", "Price", "Furniture Type", "Colour",
                                                    "Materials", "Size", "Quantity", "Company", "Style", "Weight");
             while (queryResult.next()) {
-                System.out.println("5");
                 StringBuilder itemString = new StringBuilder(queryResult.getInt("id") + "\t");
                 for (int i = 0; i < headers.size(); i++) {
                     itemString.append(queryResult.getString(headers.get(i)));
@@ -98,21 +91,35 @@ public class SearchModel {
         else if(query.length() == 6) {
             depth = 2;
         }
-        System.out.println(depth);
 
-        return recursiveFormatQuery(formattedQuery, query, depth, conn);
+        List<String> permutations = recursiveFormatQuery(new ArrayList<>(), query, depth, conn);
+
+        for(String s : permutations) {
+            formattedQuery += " UNION SELECT * FROM t WHERE Name LIKE '%" + s + "%'";
+        }
+        System.out.println(formattedQuery);
+        return formattedQuery;
     }
 
-    private String recursiveFormatQuery (String formattedQuery, String query, int depth, Connection conn) throws SQLException {
+    private List<String> recursiveFormatQuery (List<String> permutations, String query, int depth, Connection conn) throws SQLException {
         System.console().printf(query + "\n");
-        System.console().printf("\n");
+//        System.console().printf(depth + "\n");
 
-        formattedQuery += " UNION SELECT * FROM t WHERE Name LIKE '%" + query + "%'";
+//        formattedQuery += " UNION SELECT * FROM t WHERE Name LIKE '%" + query + "%'";
+
         if(depth > 0) {
             for (int i = 0; i < query.length(); i++) {
-                query += recursiveFormatQuery(formattedQuery, query.substring(0, i) + "_" + query.substring(i + 2), depth - 1, conn);
+                List<String> newPermutations = recursiveFormatQuery(permutations, query.substring(0, i) + "_" + query.substring(i + 1), depth - 1, conn);
+                for(String s : newPermutations) {
+                    if(!(permutations.contains(s))) {
+                        permutations.add(s);
+                    }
+                }
             }
         }
-        return query;
+        else {
+            permutations.add(query);
+        }
+        return permutations;
     }
 }
