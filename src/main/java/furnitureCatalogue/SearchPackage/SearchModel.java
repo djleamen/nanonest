@@ -43,7 +43,10 @@ public class SearchModel {
                     + " AND " + controller.ranges.get(s).get(1) + " AND ";
         }
         // Remove trailing " AND "
-        filter = filter.substring(0, filter.length()-4);
+        if(!filter.isEmpty()) {
+            filter = filter.substring(0, filter.length() - 4);
+            filter = "WHERE " + filter;
+        }
 
         try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement(
@@ -62,7 +65,7 @@ public class SearchModel {
             reformat.execute();
 
             PreparedStatement searchFilter = connection.prepareStatement("(" + format +
-                    ") INTERSECT SELECT * FROM t WHERE " + filter + "ORDER BY " + controller.sortCategory + order);
+                    ") INTERSECT SELECT * FROM t " + filter + "ORDER BY " + controller.sortCategory + order);
 //            searchFilter.setString(1, query);
             ResultSet queryResult = searchFilter.executeQuery();
 
@@ -101,7 +104,7 @@ public class SearchModel {
         for(String s : permutations) {
             formattedQuery += " UNION SELECT * FROM t WHERE Name LIKE '%" + s + "%'";
         }
-        System.out.println(formattedQuery);
+//        System.out.println(formattedQuery);
         return formattedQuery;
     }
 
