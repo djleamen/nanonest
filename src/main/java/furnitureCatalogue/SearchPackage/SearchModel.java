@@ -118,7 +118,6 @@ public class SearchModel {
 
         // Building the sql chunk
         for(String s : permutations) {
-            System.out.println(s);
             formattedQuery += " UNION SELECT * FROM t WHERE Name LIKE '%" + s + "%'";
         }
         return formattedQuery;
