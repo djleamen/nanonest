@@ -47,7 +47,7 @@ public class CatalogueUI extends JFrame {
             dispose();
             return;
         }
-        fileIO = new CatalogueFileIO("Fake.csv", this);
+        fileIO = new CatalogueFileIO("Sample.csv", this);
         c = SearchController.getInstance();
         v = SearchView.getInstance();
         initSwingUI();
