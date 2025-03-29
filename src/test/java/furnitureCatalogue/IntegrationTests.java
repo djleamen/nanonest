@@ -35,17 +35,21 @@ public class IntegrationTests {
     }
 
     @Test
-    public void testEditUI() {
+    public void testEditUI() throws Exception {
+        uiTest.setUp();
+        uiTest.testEditEntry();
     }
 
     @Test
-    public void testRemoveUI() {
-
+    public void testRemoveUI() throws Exception {
+        uiTest.setUp();
+        uiTest.testRemoveEntry();
     }
 
     @Test
-    public void testAddUI() {
-
+    public void testAddUI() throws Exception {
+        uiTest.setUp();
+        uiTest.testAddEntry();
     }
 
     @Test
@@ -73,5 +77,8 @@ public class IntegrationTests {
         loginTest.testAdminLogin();
         uiTest.setUp();
         uiTest.testDisplayEntries();
+        uiTest.testAddEntry();
+        uiTest.testRemoveEntry();
+        uiTest.testEditEntry();
     }
 }
