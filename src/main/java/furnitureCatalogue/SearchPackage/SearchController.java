@@ -41,8 +41,6 @@ public class SearchController {
     }
     
     public void searchQuery() {
-        this.filters.clear(); // Clear previous filters
-        this.ranges.clear();
         query = view.getQuery();
         sortCategory = view.getSortCategory();
         sortMode = view.getSortMode();
