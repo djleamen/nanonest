@@ -33,7 +33,7 @@ public class SearchModel {
     public void query() {
         String url = "src/main/resources/" + fileName;
         String order = controller.sortMode ? " ASC" : " DESC";
-        String query = "%" + controller.query + "%";
+        String query = controller.query;
         String filter = "";
         for (String s : controller.filters.keySet()) {
             filter += s + " = '" + controller.filters.get(s) + "' AND ";
@@ -43,11 +43,16 @@ public class SearchModel {
                     + " AND " + controller.ranges.get(s).get(1) + " AND ";
         }
         // Remove trailing " AND "
+        filter = filter.substring(0, filter.length()-4);
 
         try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:")) {
             PreparedStatement load = connection.prepareStatement(
                     "CREATE TABLE t AS SELECT * FROM CSVREAD('" + url + "')");
             load.execute();
+
+            String format = formatQuery(query, connection);
+//            PreparedStatement search = connection.prepareStatement(format);
+//            ResultSet queryStepOne = search.executeQuery();
 
             PreparedStatement reformat = connection.prepareStatement(
                     "ALTER TABLE t ALTER COLUMN id INTEGER;" +
@@ -55,12 +60,11 @@ public class SearchModel {
                     "ALTER TABLE t ALTER COLUMN Weight INTEGER;" +
                     "ALTER TABLE t ALTER COLUMN Price INTEGER;");
             reformat.execute();
-            String format = formatQuery("astic", connection);
 
-            PreparedStatement search = connection.prepareStatement(
-                    "SELECT * FROM t WHERE " + filter + "Name LIKE ? ORDER BY " + controller.sortCategory + order);
-            search.setString(1, query);
-            ResultSet queryResult = search.executeQuery();
+            PreparedStatement searchFilter = connection.prepareStatement("(" + format +
+                    ") INTERSECT SELECT * FROM t WHERE " + filter + "ORDER BY " + controller.sortCategory + order);
+//            searchFilter.setString(1, query);
+            ResultSet queryResult = searchFilter.executeQuery();
 
             List<String> headers = Arrays.asList("Name", "Price", "Furniture Type", "Colour",
                                                    "Materials", "Size", "Quantity", "Company", "Style", "Weight");
@@ -102,7 +106,7 @@ public class SearchModel {
     }
 
     private List<String> recursiveFormatQuery (List<String> permutations, String query, int depth, Connection conn) throws SQLException {
-        System.console().printf(query + "\n");
+//        System.console().printf(query + "\n");
 //        System.console().printf(depth + "\n");
 
 //        formattedQuery += " UNION SELECT * FROM t WHERE Name LIKE '%" + query + "%'";
