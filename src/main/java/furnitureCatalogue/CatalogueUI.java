@@ -30,7 +30,7 @@ public class CatalogueUI extends JFrame {
 
     // Field for command-line input (used by tests)
     protected Scanner s;
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             CatalogueUI catalogueUI = new CatalogueUI();
@@ -74,28 +74,31 @@ public class CatalogueUI extends JFrame {
         // FONT MAKES SURE THAT SPACING IS CONSISTENT, NOT NEEDED IF/WHEN A TABLE IS USED FOR OUTPUT
         outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(outputArea);
-        
+
         if ("admin".equals(role)) {
-            addButton(buttonPanel, "Display all Entries", 
-                e -> captureConsoleOutput(outputArea, this::displayEntriesSwing));
-            addButton(buttonPanel, "Edit an Entry", 
-                e -> captureConsoleOutput(outputArea, this::editEntrySwing));
-            addButton(buttonPanel, "Add an Entry", 
-                e -> captureConsoleOutput(outputArea, this::addEntrySwing));
-            addButton(buttonPanel, "Remove an Entry", 
-                e -> captureConsoleOutput(outputArea, this::removeEntrySwing));
-            addButton(buttonPanel, "View Specific Entry", 
-                e -> captureConsoleOutput(outputArea, this::viewEntrySwing));
-            addButton(buttonPanel, "Search", 
-                e -> captureConsoleOutput(outputArea, this::specificSearchSwing));
-            addButton(buttonPanel, "Sort", 
-                e -> captureConsoleOutput(outputArea, this::sortEntriesSwing));
-            addButton(buttonPanel, "Filter", 
-                e -> captureConsoleOutput(outputArea, this::filterEntriesSwing));
-            addButton(buttonPanel, "Advanced Search", 
-                e -> captureConsoleOutput(outputArea, this::advancedSearchSwing));
-            addButton(buttonPanel, "Random Entry", 
-                e -> captureConsoleOutput(outputArea, this::randomEntrySwing));
+            addButton(buttonPanel, "Display all Entries",
+                    e -> captureConsoleOutput(outputArea, this::displayEntriesSwing));
+            // New button for JTable display
+            addButton(buttonPanel, "Display Catalogue in JTable",
+                    e -> displayEntriesTable());
+            addButton(buttonPanel, "Edit an Entry",
+                    e -> captureConsoleOutput(outputArea, this::editEntrySwing));
+            addButton(buttonPanel, "Add an Entry",
+                    e -> captureConsoleOutput(outputArea, this::addEntrySwing));
+            addButton(buttonPanel, "Remove an Entry",
+                    e -> captureConsoleOutput(outputArea, this::removeEntrySwing));
+            addButton(buttonPanel, "View Specific Entry",
+                    e -> captureConsoleOutput(outputArea, this::viewEntrySwing));
+            addButton(buttonPanel, "Search",
+                    e -> captureConsoleOutput(outputArea, this::specificSearchSwing));
+            addButton(buttonPanel, "Sort",
+                    e -> captureConsoleOutput(outputArea, this::sortEntriesSwing));
+            addButton(buttonPanel, "Filter",
+                    e -> captureConsoleOutput(outputArea, this::filterEntriesSwing));
+            addButton(buttonPanel, "Advanced Search",
+                    e -> captureConsoleOutput(outputArea, this::advancedSearchSwing));
+            addButton(buttonPanel, "Random Entry",
+                    e -> captureConsoleOutput(outputArea, this::randomEntrySwing));
             addButton(buttonPanel, "Add a User", e -> {
                 PrintStream originalOut = System.out;
                 try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -114,18 +117,22 @@ public class CatalogueUI extends JFrame {
             });
         } else {
             // For non-admin users
-            addButton(buttonPanel, "Display all Entries", 
-                e -> captureConsoleOutput(outputArea, this::displayEntriesSwing));
-            addButton(buttonPanel, "View Specific Entry", 
-                e -> captureConsoleOutput(outputArea, this::viewEntrySwing));
-            addButton(buttonPanel, "Search", 
-                e -> captureConsoleOutput(outputArea, this::specificSearchSwing));
+            addButton(buttonPanel, "Display all Entries",
+                    e -> captureConsoleOutput(outputArea, this::displayEntriesSwing));
+            // New button for JTable display
+            addButton(buttonPanel, "Display Catalogue in JTable",
+                    e -> displayEntriesTable());
+            addButton(buttonPanel, "View Specific Entry",
+                    e -> captureConsoleOutput(outputArea, this::viewEntrySwing));
+            addButton(buttonPanel, "Search",
+                    e -> captureConsoleOutput(outputArea, this::specificSearchSwing));
         }
         addButton(buttonPanel, "Exit", e -> System.exit(0));
         mainPanel.add(buttonPanel, BorderLayout.WEST);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
     }
 
+    // Helper method to create and add a button to a panel.
     private void addButton(JPanel panel, String text, ActionListener al) {
         JButton btn = new JButton(text);
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -134,7 +141,7 @@ public class CatalogueUI extends JFrame {
         panel.add(Box.createVerticalStrut(10));
     }
 
-    // Capture console output and redirect it to the JTextArea
+    // Capture console output and redirect it to the JTextArea.
     private void captureConsoleOutput(JTextArea outputArea, Runnable action) {
         PrintStream originalOut = System.out;
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -152,7 +159,7 @@ public class CatalogueUI extends JFrame {
         }
     }
 
-    // Swing-based login using JOptionPane
+    // Swing-based login using JOptionPane.
     protected boolean inputLogin() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -163,9 +170,9 @@ public class CatalogueUI extends JFrame {
         panel.add(new JLabel("Password:"));
         panel.add(passField);
         int result = JOptionPane.showConfirmDialog(
-            this, panel, "Please Log In",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
+                this, panel, "Please Log In",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
         );
         if (result != JOptionPane.OK_OPTION) {
             System.out.println("User cancelled login");
@@ -176,13 +183,13 @@ public class CatalogueUI extends JFrame {
         String hashed = login.hashString(password);
         if (!login.users.containsKey(username) || !login.users.get(username).equals(hashed)) {
             JOptionPane.showMessageDialog(this, "Invalid credentials.",
-                                          "Login Failed", JOptionPane.ERROR_MESSAGE);
+                    "Login Failed", JOptionPane.ERROR_MESSAGE);
             return true;
         }
         String userRole = login.roles.get(username);
         if (userRole == null) {
             JOptionPane.showMessageDialog(this, "Could not determine role. Exiting...",
-                                          "Login Error", JOptionPane.ERROR_MESSAGE);
+                    "Login Error", JOptionPane.ERROR_MESSAGE);
             return true;
         }
         this.role = userRole;
@@ -196,6 +203,46 @@ public class CatalogueUI extends JFrame {
         printTableHeader();
         catalogue.entrySet().forEach(this::printTableRow);
         System.out.println();
+    }
+
+    /**
+     * New method to display entries using a JTable.
+     */
+    public void displayEntriesTable() {
+        // Build column names array. We add "ID" as the first column.
+        String[] columnNames = new String[headers.length + 1];
+        columnNames[0] = "ID";
+        for (int i = 0; i < headers.length; i++) {
+            columnNames[i + 1] = headers[i];
+        }
+
+        // Build the data array from the catalogue.
+        Object[][] data = new Object[catalogue.size()][columnNames.length];
+        int rowIndex = 0;
+        for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet()) {
+            data[rowIndex][0] = entry.getKey();
+            ArrayList<String> rowData = entry.getValue();
+            for (int j = 0; j < rowData.size(); j++) {
+                data[rowIndex][j + 1] = rowData.get(j);
+            }
+            rowIndex++;
+        }
+
+        // Create the JTable with the data and column names.
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+        table.setShowGrid(true);
+        table.setGridColor(Color.LIGHT_GRAY);
+
+        // Wrap the JTable in a scroll pane.
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Create a new frame to display the table.
+        JFrame tableFrame = new JFrame("Catalogue Entries");
+        tableFrame.setSize(600, 400);
+        tableFrame.add(scrollPane);
+        tableFrame.setLocationRelativeTo(null);
+        tableFrame.setVisible(true);
     }
 
     private void viewEntrySwing() {
@@ -374,7 +421,7 @@ public class CatalogueUI extends JFrame {
 
     private void sortEntriesSwing() {
         String field = JOptionPane.showInputDialog(
-            this, "Which field to sort by?\n" + String.join(", ", headers));
+                this, "Which field to sort by?\n" + String.join(", ", headers));
         if (field == null || field.isEmpty()) {
             System.out.println("Cancelled or blank.");
             return;
@@ -403,7 +450,7 @@ public class CatalogueUI extends JFrame {
 
     private void filterEntriesSwing() {
         String field = JOptionPane.showInputDialog(
-            this, "Which field to filter?\n" + String.join(", ", headers));
+                this, "Which field to filter?\n" + String.join(", ", headers));
         if (field == null || field.isEmpty()) {
             System.out.println("Cancelled or blank.");
             return;
@@ -459,12 +506,12 @@ public class CatalogueUI extends JFrame {
         v.ranges.clear();
         while (true) {
             v.query = JOptionPane.showInputDialog(
-            this, "Enter name of item:");
+                    this, "Enter name of item:");
             break;
         }
         while (true) {
             String field = JOptionPane.showInputDialog(
-                this, "Enter field to filter (blank to end):");
+                    this, "Enter field to filter (blank to end):");
             if (field == null || field.isEmpty()) {
                 break;
             }
@@ -490,7 +537,7 @@ public class CatalogueUI extends JFrame {
             }
         }
         String sortField = JOptionPane.showInputDialog(
-            this, "Sort by what category?\n" + String.join(", ", headers));
+                this, "Sort by what category?\n" + String.join(", ", headers));
         if (sortField == null) {
             System.out.println("Cancelled. No advanced search done.");
             return;
@@ -531,7 +578,7 @@ public class CatalogueUI extends JFrame {
         for (int i = 1; i < headers.length; i++) {
             sb.append(headers[i]);
             for (int j = 0; j <= Math.ceil((double)(maxLengths[i - 1]) / 8.0)
-                                - Math.floor((double)(headers[i].length()) / 8.0); j++) {
+                    - Math.floor((double)(headers[i].length()) / 8.0); j++) {
                 sb.append("\t");
             }
         }
@@ -545,7 +592,7 @@ public class CatalogueUI extends JFrame {
         for (int i = 0; i < row.size(); i++) {
             sb.append(row.get(i));
             for (int j = 0; j <= Math.ceil((double)(maxLengths[i]) / 8.0)
-                                - Math.floor((double)(row.get(i).length()) / 8.0); j++) {
+                    - Math.floor((double)(row.get(i).length()) / 8.0); j++) {
                 sb.append("\t");
             }
         }
@@ -570,13 +617,13 @@ public class CatalogueUI extends JFrame {
         return list;
     }
 
-    // --- Command-line interface wrapper methods for testing --- 
-    
+    // --- Command-line interface wrapper methods for testing ---
+
     public void commandLineMenu() {
         // For testing purposes you can leave this as a no-op:
         System.out.println("commandLineMenu() invoked.");
     }
-    
+
     public void viewEntry() {
         int id;
         while (true) {
@@ -603,7 +650,7 @@ public class CatalogueUI extends JFrame {
             System.out.println("\t" + headers[i + 1] + ": " + value.get(i));
         }
     }
-    
+
     public void editEntry() {
         int id;
         while (true) {
@@ -628,8 +675,8 @@ public class CatalogueUI extends JFrame {
         for (int i = 0; i < value.size(); i++) {
             String field = headers[i + 1];
             if (field.equalsIgnoreCase("Price") ||
-                field.equalsIgnoreCase("Quantity") ||
-                field.equalsIgnoreCase("Weight")) {
+                    field.equalsIgnoreCase("Quantity") ||
+                    field.equalsIgnoreCase("Weight")) {
                 System.out.print("Input new " + field + " to replace " + value.get(i) + ": ");
                 String input = s.nextLine();
                 if (!input.equals("")) {
@@ -651,7 +698,7 @@ public class CatalogueUI extends JFrame {
         catalogue.put(id, value);
         fileIO.editCSVLine(String.valueOf(id), id + "," + String.join(",", value));
     }
-    
+
     public void addEntry() {
         int id;
         while (true) {
@@ -682,7 +729,7 @@ public class CatalogueUI extends JFrame {
         catalogue.put(id, value);
         fileIO.addCSVLine(id + "," + String.join(",", value));
     }
-    
+
     public void removeEntry() {
         int id;
         while (true) {
@@ -707,7 +754,7 @@ public class CatalogueUI extends JFrame {
         fileIO.deleteCSVLine(String.valueOf(id));
         System.out.println("Entry removed successfully.");
     }
-    
+
     public void specificSearch() {
         System.out.print("Enter name to search: ");
         String inp = s.nextLine();
