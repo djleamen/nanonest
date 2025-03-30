@@ -78,35 +78,34 @@ public class CatalogueUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(outputArea);
 
         if ("admin".equals(role)) {
-            addButton(buttonPanel, "Display all Entries",
-                    e -> captureConsoleOutput(outputArea, this::displayEntriesSwing));
-            // New button for JTable display
-            addButton(buttonPanel, "Display Catalogue in JTable",
-                    e -> displayEntriesTable());
-            addButton(buttonPanel, "Edit an Entry",
-                    e -> captureConsoleOutput(outputArea, this::editEntrySwing));
-            addButton(buttonPanel, "Add an Entry",
-                    e -> captureConsoleOutput(outputArea, this::addEntrySwing));
-            addButton(buttonPanel, "Remove an Entry",
-                    e -> captureConsoleOutput(outputArea, this::removeEntrySwing));
-            addButton(buttonPanel, "View Specific Entry",
-                    e -> captureConsoleOutput(outputArea, this::viewEntrySwing));
-            addButton(buttonPanel, "Search",
-                    e -> captureConsoleOutput(outputArea, this::specificSearchSwing));
-            addButton(buttonPanel, "Sort",
-                    e -> captureConsoleOutput(outputArea, this::sortEntriesSwing));
-            addButton(buttonPanel, "Filter",
-                    e -> captureConsoleOutput(outputArea, this::filterEntriesSwing));
-            addButton(buttonPanel, "Advanced Search",
-                    e -> captureConsoleOutput(outputArea, this::advancedSearchSwing));
-            addButton(buttonPanel, "Random Entry",
-                    e -> captureConsoleOutput(outputArea, this::randomEntrySwing));
-            addButton(buttonPanel, "Add a User", e -> {
+
+            addButton(buttonPanel, "Display all Entries", 
+                e -> captureConsoleOutput(outputArea, this::displayEntriesSwing));
+            addButton(buttonPanel, "Edit an Entry", 
+                e -> captureConsoleOutput(outputArea, this::editEntrySwing));
+            addButton(buttonPanel, "Add an Entry", 
+                e -> captureConsoleOutput(outputArea, this::addEntrySwing));
+            addButton(buttonPanel, "Remove an Entry", 
+                e -> captureConsoleOutput(outputArea, this::removeEntrySwing));
+            addButton(buttonPanel, "View Specific Entry", 
+                e -> captureConsoleOutput(outputArea, this::viewEntrySwing));
+            addButton(buttonPanel, "Search", 
+                e -> captureConsoleOutput(outputArea, this::specificSearchSwing));
+            addButton(buttonPanel, "Sort", 
+                e -> captureConsoleOutput(outputArea, this::sortEntriesSwing));
+            addButton(buttonPanel, "Filter", 
+                e -> captureConsoleOutput(outputArea, this::filterEntriesSwing));
+            addButton(buttonPanel, "Advanced Search", 
+                e -> captureConsoleOutput(outputArea, this::advancedSearchSwing));
+            addButton(buttonPanel, "Random Entry", 
+                e -> captureConsoleOutput(outputArea, this::randomEntrySwing));
+            addButton(buttonPanel, "Manage Users", e -> {
+              
                 PrintStream originalOut = System.out;
                 try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
                      PrintStream ps = new PrintStream(bos)) {
                     System.setOut(ps);
-                    login.makeUserSwing(this);
+                    login.modUserInput(this);
                     ps.flush();
                     outputArea.append(bos.toString());
                     outputArea.append("\n");
