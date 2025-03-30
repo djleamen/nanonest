@@ -1,13 +1,12 @@
 /*
  * This class is responsible for handling the login functionality of the catalogue.
  */
-
 package furnitureCatalogue;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import java.awt.*;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -22,7 +21,6 @@ public class Login {
     protected HashMap<String, String> users;
     protected final HashMap<String, String> roles;
     protected Scanner scanner;
-
     public Login() {
         users = new HashMap<>();
         roles = new HashMap<>();
@@ -32,7 +30,6 @@ public class Login {
         // Admin: admin123
         readCSV("src/main/resources/Users.csv");
     }
-
     public String authenticate() {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -44,7 +41,6 @@ public class Login {
             return null;
         }
     }
-
     protected String readPassword(String prompt) {
 //        Console console = System.console();
         if (System.console() == null) {
@@ -55,7 +51,6 @@ public class Login {
             return new String(passwordArray);
         }
     }
-
     public String hashString(String input) {
         try {
             String password = input;
@@ -68,7 +63,6 @@ public class Login {
             throw new RuntimeException(e);
         }
     }
-
     private void readCSV(String fileName){
         try{
             File userCSV = new File(fileName);
@@ -85,6 +79,102 @@ public class Login {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void modUserInput(Component parent){
+        int choice = JOptionPane.showConfirmDialog(null, "Do you want to make a new user?",
+                "Modify Users", JOptionPane.YES_NO_CANCEL_OPTION);
+
+        //Make User As Normal:
+        if (choice == JOptionPane.YES_OPTION){
+            makeUserSwing(parent);
+
+            //Modify Permissions
+        } else if (choice == JOptionPane.NO_OPTION){
+            modUserSwing(parent);
+        }
+    }
+
+    public void modUserSwing(Component parent){
+        String username = JOptionPane.showInputDialog(parent, "Enter user to modify:");
+        //Checks for input validity.
+        if (username == null || username.isEmpty()) {
+            System.out.println("Cancelled or blank. Aborting user creation.");
+            return;
+        }
+
+        if (!users.containsKey(username)) {
+            JOptionPane.showMessageDialog(parent, "Username " + username + " does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else{
+            int choice = JOptionPane.showConfirmDialog(null, "Do you want to modify their password?",
+                    "Modify Users", JOptionPane.YES_NO_CANCEL_OPTION);
+
+            //Modify Password Section
+            if (choice == JOptionPane.YES_OPTION){
+                String newPass = JOptionPane.showInputDialog("Enter the new password: ");
+                if (newPass == null || newPass.isEmpty()) {
+                    System.out.println("Cancelled or blank. Aborting user creation.");
+                    return;
+                }else{
+                    //Change the users file to reflect the changes.
+                    users.put(username, hashString(newPass));
+                    rewriteUsersCSV();
+                    JOptionPane.showMessageDialog(parent, "Password Changed Successfully.");
+                }
+                //Modify Rank Section:
+            } else if (choice == JOptionPane.NO_OPTION){
+                choice = JOptionPane.showConfirmDialog(null, "Do you want to modify their rank?", "Modify Users", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                if (choice == JOptionPane.YES_OPTION){
+                    choice = JOptionPane.showConfirmDialog(null, "Is this user an admin?", "Modify Users", JOptionPane.YES_NO_OPTION);
+
+                    //Make Admin
+                    if (choice == JOptionPane.YES_OPTION){
+                        roles.put(username, "admin");
+                    } else{
+                        roles.put(username, "user");
+                    }
+
+                    rewriteUsersCSV();
+                    JOptionPane.showMessageDialog(parent, username + "'s rank was changed!");
+                    //Delete Users From Database:
+                } else if (choice == JOptionPane.NO_OPTION){
+                    choice = JOptionPane.showConfirmDialog(null, "Delete the user from the registry?", "Modify Users", JOptionPane.YES_NO_OPTION);
+                    if (choice == JOptionPane.YES_OPTION){
+                        users.remove(username);
+                        roles.remove(username);
+                        rewriteUsersCSV();
+                        JOptionPane.showMessageDialog(parent, username + " was removed from the database!");
+                    } else{
+                        System.out.println("Cancelled. Aborting User Modification.");
+                        return;
+                    }
+
+                }
+
+            } else{
+                System.out.println("Cancelled. Aborting user creation.");
+                return;
+            }
+        }
+
+    }
+
+    //Helper method to rewrite user csv file.
+    public void rewriteUsersCSV(){
+        try (FileWriter fw = new FileWriter("src/main/resources/Users.csv", false)) {
+            for (String key : users.keySet()){
+                //Determine Proper User Authority.
+                String adminFlag = (roles.get(key).equals("admin") ? "1" : "0");
+                //Write list of users to the CSV.
+                fw.write(key + "," + users.get(key) + "," + adminFlag + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void makeUserSwing(Component parent) {
@@ -122,11 +212,9 @@ public class Login {
         }
         JOptionPane.showMessageDialog(parent, "Created user: " + username, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
-
     public void makeUser() {
         writeCSV("src/main/resources/Users.csv");
     }
-
     private void writeCSV(String fileName) {
         boolean userLoop = true;
         String username = "";
