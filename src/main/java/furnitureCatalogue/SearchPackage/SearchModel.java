@@ -1,8 +1,3 @@
-/*
- * This class is responsible for handling the search functionality of the catalogue.
- * It interacts with the SearchModel and SearchView classes to perform the search and display the results.
- */
-
 package furnitureCatalogue.SearchPackage;
 
 import furnitureCatalogue.CatalogueUI;
@@ -10,19 +5,39 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Uses the JDBC library to run SQL queries. Processes output for advanced search including quality of
+ * life features such as filters, sorting, and relevancy searching all in one routine.
+ * @author Ellie Cunningham
+ * @author Lucas Fischer
+ */
 public class SearchModel {
-    private static SearchModel m; // Singleton instance
+    /**
+     * Static reference of only instance of this object to be created.
+     */
+    private static SearchModel m;
+    /**
+     * Reference to only instance of controller.
+     */
     private SearchController controller;
+    /**
+     * Name of file to be searched through.
+     */
     private String fileName;
 
-    // Private constructor
+    /**
+     * Constructor takes no inputs, can only be run through initial getInstance() call.
+     */
     private SearchModel() {
         m = this;
         controller = SearchController.getInstance();
         fileName = "Sample.csv";
     }
 
-    // Singleton getter
+    /**
+     * On first call creates SearchModel instance. Should only ever be run from controller.
+     * @return Only instance of SearchModel.
+     */
     protected static SearchModel getInstance() {
         if (Objects.isNull(m)) {
             m = new SearchModel();
@@ -31,6 +46,11 @@ public class SearchModel {
     }
 
     // Runs entire search routine, should only ever be run from searchController.
+
+    /**
+     * Emulates database file in memory from csv and executes SQL queries to generate and output results
+     * for advanced search. Results are output to stream rather than returned.
+     */
     protected void query() {
         String url = "src/main/resources/" + fileName;
         String order = controller.sortMode ? " ASC" : " DESC";
@@ -93,7 +113,12 @@ public class SearchModel {
         }
     }
 
-    // Generates chunk of sql query that allows for some typos in search entry
+    /**
+     * Formats search entry to include 'wildcard characters' and prebuild a segment of SQL code.
+     * Leniency depends on length of query.
+     * @param query Given search entry.
+     * @return Segment of SQL query pertaining to relevancy search.
+     */
     private String formatQuery(String query) {
         int depth = (query.length()/3) + 1; // Represents how many wrong characters are permitted
         String formattedQuery = "SELECT * FROM t WHERE Name LIKE '%" + query + "%'";
@@ -123,7 +148,12 @@ public class SearchModel {
         return formattedQuery;
     }
 
-    // Recursively adds different combinations of wildcards and stores them in a list
+    /**
+     * Recursively adds wildcard character '_' to different positions in query.
+     * @param query Given search entry, may contain wildcards depending on number of recursive calls.
+     * @param depth Tracks remaining recursive calls. Subtracts 1 per iterations, breaks when > 0.
+     * @return Permutations of wildcard combinations.
+     */
     private List<String> recursiveFormatQuery (String query, int depth) {
         List<String> permutations = new ArrayList<>();
         if(depth > 0) {

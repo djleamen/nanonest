@@ -1,26 +1,51 @@
-/*
- * This class is responsible for handling the search functionality of the catalogue.
- * It interacts with the SearchModel and SearchView classes to perform the search and display the results.
- */
-
 package furnitureCatalogue.SearchPackage;
 
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.ArrayList;
 
+/**
+ * Handles communication between SearchView and SearchModel classes.
+ * @author Ellie Cunningham
+ */
 public class SearchController {
-    private static SearchController c; // Singleton instance
+    /**
+     * Static reference of only instance of this object to be created.
+     */
+    private static SearchController c;
+    /**
+     * Reference to only instance of model.
+     */
     private SearchModel model;
+    /**
+     * Reference to only instance of view.
+     */
     private SearchView view;
-    
-    protected String query; // Actual search string
-    protected String sortCategory;
-    protected boolean sortMode; // true = ascending order, false = descending order.
-    protected HashMap<String, String> filters; // e.g., <Colour, Blue>
-    protected HashMap<String, ArrayList<String>> ranges; // e.g., <Price, [10, 50]>
 
-    // Private constructor
+    /**
+     * User inputted search entry.
+     */
+    protected String query;
+    /**
+     * User selected category to sort results by.
+     */
+    protected String sortCategory;
+    /**
+     * User selected sort order. true = ascending order, false = descending order.
+     */
+    protected boolean sortMode;
+    /**
+     * Hashmap storing all text based filters (e.g., <Colour, Blue>).
+     */
+    protected HashMap<String, String> filters;
+    /**
+     * Hashmap storing all integer based filters (e.g., <Price, [10, 50]>).
+     */
+    protected HashMap<String, ArrayList<String>> ranges;
+
+    /**
+     * Constructor takes no inputs, can only be run through initial getInstance() call.
+     */
     private SearchController() {
         c = this;
         model = SearchModel.getInstance();
@@ -31,15 +56,21 @@ public class SearchController {
         filters = new HashMap<>();
         ranges = new HashMap<>();
     }
-    
-    // Singleton getter
+
+    /**
+     * On first call creates SearchController instance.
+     * @return Only instance of SearchController.
+     */
     public static SearchController getInstance() {
         if (Objects.isNull(c)) {
             c = new SearchController();
         }
         return c;
     }
-    
+
+    /**
+     * Grabs information from SearchView needed to execute query then calls query() in SearchModel.
+     */
     public void searchQuery() {
         query = view.getQuery();
         sortCategory = view.getSortCategory();
