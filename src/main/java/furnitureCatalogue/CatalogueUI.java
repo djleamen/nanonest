@@ -96,12 +96,12 @@ public class CatalogueUI extends JFrame {
                 e -> captureConsoleOutput(outputArea, this::advancedSearchSwing));
             addButton(buttonPanel, "Random Entry", 
                 e -> captureConsoleOutput(outputArea, this::randomEntrySwing));
-            addButton(buttonPanel, "Add a User", e -> {
+            addButton(buttonPanel, "Manage Users", e -> {
                 PrintStream originalOut = System.out;
                 try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
                      PrintStream ps = new PrintStream(bos)) {
                     System.setOut(ps);
-                    login.makeUserSwing(this);
+                    login.modUserInput(this);
                     ps.flush();
                     outputArea.append(bos.toString());
                     outputArea.append("\n");
