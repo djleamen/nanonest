@@ -8,7 +8,7 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
 @Suite
-@SelectClasses({CatalogueUITest.class, CatalogueFileIOTest.class, LoginTest.class})
+@SelectClasses({CatalogueUITest.class, CatalogueFileIOTest.class, LoginTest.class, IntegrationTests.class})
 public class CatalogueTestSuite {
     // Runs all tests in the suite.
 }
