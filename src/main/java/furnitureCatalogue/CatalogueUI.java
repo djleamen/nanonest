@@ -11,6 +11,8 @@ package furnitureCatalogue;
 import furnitureCatalogue.SearchPackage.SearchController;
 import furnitureCatalogue.SearchPackage.SearchView;
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
@@ -210,6 +212,7 @@ public class CatalogueUI extends JFrame {
      */
     public void displayEntriesTable() {
         boolean hasIDColumn = headers.length > 0 && headers[0].equalsIgnoreCase("ID");
+        
         String[] columnNames;
         if (hasIDColumn) {
             columnNames = headers;
@@ -222,28 +225,55 @@ public class CatalogueUI extends JFrame {
         Object[][] data = new Object[catalogue.size()][columnNames.length];
         int rowIndex = 0;
         for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet()) {
-            int dataColumn = 0;
             Integer key = entry.getKey();
             ArrayList<String> rowData = entry.getValue();
-            if (!hasIDColumn) {
-                data[rowIndex][dataColumn++] = key;
-            }
-            int startIndex = hasIDColumn ? 1 : 0;
-            for (int j = startIndex; j < rowData.size(); j++) {
+            int dataColumn = 0;
+
+            data[rowIndex][dataColumn++] = key;
+
+            for (String value : rowData) {
                 if (dataColumn >= columnNames.length) break;
-                data[rowIndex][dataColumn++] = rowData.get(j);
+                data[rowIndex][dataColumn++] = value;
             }
             rowIndex++;
         }
-        JTable table = new JTable(data, columnNames);
+
+        JTable table = new JTable(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Disable cell editing
+            }
+        };
+
         table.setFillsViewportHeight(true);
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
-        JScrollPane scrollPane = new JScrollPane(table);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setPreferredWidth(200);
+        }
+
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            TableColumn tableColumn = table.getColumnModel().getColumn(column);
+            int preferredWidth = tableColumn.getMinWidth();
+            int maxWidth = tableColumn.getMaxWidth();
+
+            for (int row = 0; row < table.getRowCount(); row++) {
+                TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
+                Component c = table.prepareRenderer(cellRenderer, row, column);
+                int width = c.getPreferredSize().width + table.getIntercellSpacing().width;
+                preferredWidth = Math.max(preferredWidth, width);
+            }
+
+            preferredWidth = Math.min(preferredWidth + 50, 400); // Cap at 400px
+            tableColumn.setPreferredWidth(preferredWidth);
+        }
 
         JFrame tableFrame = new JFrame("Catalogue Entries");
-        tableFrame.setSize(800, 600); // Increased size for better width
-        tableFrame.add(scrollPane);
+        tableFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        tableFrame.add(new JScrollPane(table));
+        tableFrame.setSize(1200, 600); // Wider window
         tableFrame.setLocationRelativeTo(null);
         tableFrame.setVisible(true);
     }
