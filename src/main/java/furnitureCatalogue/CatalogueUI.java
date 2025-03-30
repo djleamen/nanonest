@@ -209,37 +209,40 @@ public class CatalogueUI extends JFrame {
      * New method to display entries using a JTable.
      */
     public void displayEntriesTable() {
-        // Build column names array. We add "ID" as the first column.
-        String[] columnNames = new String[headers.length + 1];
-        columnNames[0] = "ID";
-        for (int i = 0; i < headers.length; i++) {
-            columnNames[i + 1] = headers[i];
+        boolean hasIDColumn = headers.length > 0 && headers[0].equalsIgnoreCase("ID");
+        String[] columnNames;
+        if (hasIDColumn) {
+            columnNames = headers;
+        } else {
+            columnNames = new String[headers.length + 1];
+            columnNames[0] = "ID";
+            System.arraycopy(headers, 0, columnNames, 1, headers.length);
         }
 
-        // Build the data array from the catalogue.
         Object[][] data = new Object[catalogue.size()][columnNames.length];
         int rowIndex = 0;
         for (Map.Entry<Integer, ArrayList<String>> entry : catalogue.entrySet()) {
-            data[rowIndex][0] = entry.getKey();
+            int dataColumn = 0;
+            Integer key = entry.getKey();
             ArrayList<String> rowData = entry.getValue();
-            for (int j = 0; j < rowData.size(); j++) {
-                data[rowIndex][j + 1] = rowData.get(j);
+            if (!hasIDColumn) {
+                data[rowIndex][dataColumn++] = key;
+            }
+            int startIndex = hasIDColumn ? 1 : 0;
+            for (int j = startIndex; j < rowData.size(); j++) {
+                if (dataColumn >= columnNames.length) break;
+                data[rowIndex][dataColumn++] = rowData.get(j);
             }
             rowIndex++;
         }
-
-        // Create the JTable with the data and column names.
         JTable table = new JTable(data, columnNames);
         table.setFillsViewportHeight(true);
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
-
-        // Wrap the JTable in a scroll pane.
         JScrollPane scrollPane = new JScrollPane(table);
 
-        // Create a new frame to display the table.
         JFrame tableFrame = new JFrame("Catalogue Entries");
-        tableFrame.setSize(600, 400);
+        tableFrame.setSize(800, 600); // Increased size for better width
         tableFrame.add(scrollPane);
         tableFrame.setLocationRelativeTo(null);
         tableFrame.setVisible(true);
