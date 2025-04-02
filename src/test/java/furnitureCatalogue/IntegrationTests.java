@@ -2,83 +2,116 @@ package furnitureCatalogue;
 
 import org.junit.jupiter.api.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IntegrationTests {
-    private CatalogueUITest uiTest;
-    private CatalogueFileIOTest fileIOTest;
-    private LoginTest loginTest;
+    private Login login;
+    private CatalogueUI ui;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
 
     @BeforeEach
-    void setUp() throws IOException, URISyntaxException {
-        fileIOTest = new CatalogueFileIOTest();
-        uiTest = new CatalogueUITest();
-        loginTest = new LoginTest();
+    void setUp() {
+        ui = new CatalogueUI() {
+            @Override
+            public void commandLineMenu() {
+                // Override to prevent interactive loop
+            }
+            @Override
+            protected boolean inputLogin() {
+                role = "admin";
+                return false;
+            }
+        };
+        login = new Login() {
+            @Override
+            public String readPassword(String prompt) {
+                return scanner.nextLine();
+            }
+        };
+        ArrayList<String> entry = new ArrayList<>();
+        entry.add("Blue Wooden Chair");
+        entry.add("250");
+        entry.add("Chair");
+        entry.add("Blue");
+        entry.add("Wooden");
+        entry.add("Large");
+        entry.add("75");
+        entry.add("Leon's");
+        entry.add("Modern");
+        entry.add("122");
+        System.setOut(new PrintStream(outContent));
+    }
 
-        uiTest.setUp();
-        fileIOTest.setUp();
-        loginTest.setUp();
+    @AfterEach
+    void tearDown() {
+        System.setOut(originalOut);
     }
 
     @Test
     public void testSystemEntry() throws Exception {
-        loginTest.testUserLogin();
-        uiTest.setUp();
-        uiTest.testDisplayEntries();
+        String simulatedInput = "Admin\nadmin123\n";
+        Scanner testScanner = new Scanner(simulatedInput);
+        Field scannerField = Login.class.getDeclaredField("scanner");
+        scannerField.setAccessible(true);
+        scannerField.set(login, testScanner);
+        ui.displayEntriesSwing();
+        String role = login.authenticate();
+        assertEquals("admin", role, "Admin should be able to login successfully.");
+        String output = outContent.toString();
+        assertTrue(output.contains("191\tRed Metal Sofa"),
+                "Output should display the entry with ID 191 and name 'Red Metal Sofa'.");
     }
 
     @Test
     public void testDisplayedEntries() {
-        uiTest.setUp();
-        uiTest.testDisplayEntries();
+        ui.displayEntriesSwing();
+        String output = outContent.toString();
+        assertTrue(output.contains("191\tRed Metal Sofa"),
+                "Output should display the entry with ID 191 and name 'Red Metal Sofa'.");
+}
+
+    @Test
+    public void testEditUI() {
+
     }
 
     @Test
-    public void testEditUI() throws Exception {
-        uiTest.setUp();
-        uiTest.testEditEntry();
+    public void testRemoveUI() {
+
     }
 
     @Test
-    public void testRemoveUI() throws Exception {
-        uiTest.setUp();
-        uiTest.testRemoveEntry();
+    public void testAddUI() {
+
     }
 
     @Test
-    public void testAddUI() throws Exception {
-        uiTest.setUp();
-        uiTest.testAddEntry();
+    public void testAdminCredentials() {
     }
 
     @Test
-    public void testAdminCredentials() throws Exception {
-        loginTest.setUp();
-        loginTest.testAdminLogin();
-        uiTest.setUp();
-        uiTest.testDisplayEntries();
+    public void testUserCredentials() {
+
     }
 
     @Test
-    public void testUserCredentials() throws Exception {
-        loginTest.setUp();
-        loginTest.testUserLogin();
-        uiTest.setUp();
-        uiTest.testDisplayEntries();
-    }
+    public void testSearchUI() {
 
-    @Test
-    public void testSearchUI() {}
+    }
 
     @Test
     public void testSystemRunThrough() throws Exception {
-        loginTest.setUp();
-        loginTest.testAdminLogin();
-        uiTest.setUp();
-        uiTest.testDisplayEntries();
-        uiTest.testAddEntry();
-        uiTest.testRemoveEntry();
-        uiTest.testEditEntry();
+        testSystemEntry();
+        testDisplayedEntries();
+        testEditUI();
+        testRemoveUI();
+        testAddUI();
+        testSearchUI();
     }
 }
