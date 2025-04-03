@@ -3,8 +3,8 @@ package furnitureCatalogue;
 import org.junit.jupiter.api.*;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,17 +34,6 @@ public class IntegrationTests {
                 return scanner.nextLine();
             }
         };
-        ArrayList<String> entry = new ArrayList<>();
-        entry.add("Blue Wooden Chair");
-        entry.add("250");
-        entry.add("Chair");
-        entry.add("Blue");
-        entry.add("Wooden");
-        entry.add("Large");
-        entry.add("75");
-        entry.add("Leon's");
-        entry.add("Modern");
-        entry.add("122");
         System.setOut(new PrintStream(outContent));
     }
 
@@ -77,32 +66,81 @@ public class IntegrationTests {
 }
 
     @Test
-    public void testEditUI() {
+    public void testEditUI() throws Exception {
+        assertTrue(ui.catalogue.containsKey(101));
+        assertEquals("Red Wood Table", ui.catalogue.get(101).get(0));
 
+        ArrayList<String> updatedEntry = new ArrayList<>();
+        updatedEntry.add("Red Leather Chair");
+        updatedEntry.add("Metal");
+        updatedEntry.add("300.50");
+        ui.catalogue.put(101, updatedEntry);
+
+        // Verify the updated data
+        assertEquals("Red Leather Chair", ui.catalogue.get(101).get(0));
+        assertEquals("Metal", ui.catalogue.get(101).get(1));
+        assertEquals("300.50", ui.catalogue.get(101).get(2));
     }
 
     @Test
     public void testRemoveUI() {
-
+        assertTrue(ui.catalogue.containsKey(101));
+        ui.catalogue.remove(101);
+        assertFalse(ui.catalogue.containsKey(101), "Entry should be removed from the catalogue");
     }
 
     @Test
     public void testAddUI() {
+        assertFalse(ui.catalogue.containsKey(202));
+        ArrayList<String> newEntry = new ArrayList<>();
+        newEntry.add("Blue Velvet Sofa");
+        newEntry.add("Fabric");
+        newEntry.add("500.75");
+        ui.catalogue.put(202, newEntry);
 
+        assertTrue(ui.catalogue.containsKey(202));
+        assertEquals("Blue Velvet Sofa", ui.catalogue.get(202).get(0));
+        assertEquals("Fabric", ui.catalogue.get(202).get(1));
+        assertEquals("500.75", ui.catalogue.get(202).get(2));
     }
 
     @Test
-    public void testAdminCredentials() {
+    public void testAdminCredentials() throws Exception {
+        String simulatedInput = "Admin\nadmin123\n";
+        Scanner testScanner = new Scanner(simulatedInput);
+        Field scannerField = Login.class.getDeclaredField("scanner");
+        scannerField.setAccessible(true);
+        scannerField.set(login, testScanner);
+
+        String role = login.authenticate();
+        assertEquals("admin", role, "Admin should have admin privileges");
     }
 
     @Test
-    public void testUserCredentials() {
+    public void testUserCredentials() throws Exception {
+        String simulatedInput = "User\nuser123\n";
+        Scanner testScanner = new Scanner(simulatedInput);
+        Field scannerField = Login.class.getDeclaredField("scanner");
+        scannerField.setAccessible(true);
+        scannerField.set(login, testScanner);
 
+        String role = login.authenticate();
+        assertEquals("user", role, "User should have user privileges.");
     }
 
     @Test
     public void testSearchUI() {
+        ui.catalogue.put(303, new ArrayList<>(List.of("Black Wooden Desk", "Wood", "250.00")));
+        assertTrue(ui.catalogue.containsKey(303), "Catalogue should contain the added entry.");
 
+        boolean found = false;
+        for (ArrayList<String> entry : ui.catalogue.values()) {
+            if (entry.contains("Black Wooden Desk")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found, "Search should successfully locate the Black Wooden Desk entry.");
     }
 
     @Test
