@@ -1,6 +1,4 @@
-# CSCI2040
-
-# Furniture Catalogue
+# CSCI2040 - NanoNest Furniture Catalogue
 
 ## Description
 The purpose of this documentation is to instruct the user how to use the furniture catalogue program, as well as how to clone and execute the program.
@@ -21,10 +19,14 @@ You will need the following to be able to run and compile this program:
 3. Run `Build-Script.bat` to build a jar file of the directory that can be executed.
 4. Non-Windows users: Run `mvn clean install` to compile and build a jar file, then run `java -jar target/CSCI2040-1.0-SNAPSHOT.jar` to execute.
 
+---
+
+## Documentation
+
+View the complete documentation and agile project planning at our [Hashnode](https://nanonest.hashnode.space/default-guide/furniture-catalogue)
 
 
-
-## How to use:
+### How to use:
 
 Before you are allowed to access the program, you are required to enter a username and password. If either of these does not match a registered user, the program will exit.
 
