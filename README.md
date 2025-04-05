@@ -1,6 +1,4 @@
-# CSCI2040
-
-# Furniture Catalogue
+# CSCI2040 - NanoNest Furniture Catalogue
 
 ## Description
 The purpose of this documentation is to instruct the user how to use the furniture catalogue program, as well as how to clone and execute the program.
